@@ -2,6 +2,7 @@
       :doc "Main compiler entry point"}
   vtolvr-compiler.core
   (:require [clojure.java.io :as io]
+            [clojure.string :as str]
             [vtolvr-compiler.pandoc :as pandoc])
   (:import (java.io File)))
 
@@ -18,26 +19,38 @@
 (defn- is-index-file? [^File f]
   (= "index.md" (.getName f)))
 
-(defn sorted-files-in [^File dir]
-  (let [all-files (.listFiles dir)
-        sub-dirs (filter #(.isDirectory %) all-files)
-        files (filter #(.isFile %) all-files)
-        index (->> files
-                   (filter is-index-file?)
-                   first)
+(defn sorted-files-in
+  ([^File dir] (sorted-files-in 0 dir))
+  ([depth, ^File dir]
+   (let [all-files (.listFiles dir)
+         sub-dirs (filter #(.isDirectory %) all-files)
+         files (filter #(.isFile %) all-files)
+         index (->> files
+                    (filter is-index-file?)
+                    first)
 
-        children (concat
-                   (->> files
-                        (filter (complement is-index-file?))
-                        sort)
+         children (concat
+                    (->> files
+                         (filter (complement is-index-file?))
+                         sort)
 
-                   (flatten
-                     (map sorted-files-in sub-dirs)))
+                    (flatten
+                      (map (partial sorted-files-in (inc depth))
+                           sub-dirs)))]
+     (cond
+       index
+       (cons index children)
 
-        sorted-files (if index
-                       (cons index children)
-                       children)]
-    sorted-files))
+       ; no explicit index? generate a fake one
+       (> depth 0)
+       (cons (str (str/join "" (repeat depth "#"))
+                  " "
+                  (.getName dir))
+             children)
+
+       ; at 0 depth, don't generate an index
+       :else
+       children))))
 
 (defn collect-files
   ([] (collect-files "en"))
