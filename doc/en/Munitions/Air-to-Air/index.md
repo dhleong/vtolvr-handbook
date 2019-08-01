@@ -25,8 +25,8 @@ Uncaged       | The targeting cue wanders around the middle of the HUD
 Vertical Scan | The cue scans up and down the middle of the HUD
 Head Track    | The cue follows the motion of your head.
 
-> **NOTE**: When using Head Track mode, make sure you've enabled HMCS power and lowered
-> your HMCS visor!
+> **NOTE**: When using Head Track mode, make sure you've enabled HMCS power
+> and lowered your HMCS visor!
 
 
 #### Radar-guided
