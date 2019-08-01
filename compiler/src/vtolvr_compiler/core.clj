@@ -67,7 +67,7 @@
     (doseq [f files]
       (println " - " (.getPath f)))
 
-    (pandoc/from-files files)
+    (pandoc/from-files files "handbook.pdf")
 
     (println "Done!")
 

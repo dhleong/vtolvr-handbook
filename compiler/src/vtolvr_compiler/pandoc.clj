@@ -9,6 +9,7 @@
   {:from "gfm"
    :toc true
    :number-sections true
+   :standalone true
 
    ; causing weird indenting issue...
    ;; :top-level-division "part"
@@ -32,21 +33,30 @@
         (concat (mapcat format-opts opts)
                 ["-"])))
 
-(defn from-stream [^InputStream stream]
-  (let [{:keys [exit out err]} (apply sh
-                                      (concat
-                                        (->pandoc-invocation
-                                          (assoc pandoc-opts
-                                                 :output "test.pdf"))
-                                        [:in stream]))]
+(defn- process-stream [^InputStream stream, extra-opts]
+  (let [invocation (->pandoc-invocation
+                     (merge pandoc-opts
+                            extra-opts))
+        {:keys [exit out err]} (apply sh (concat
+                                           invocation
+                                           [:in stream]))]
     (if (= 0 exit)
-      out
+      (do
+        (when (not (empty? err))
+          (println "PANDOC WARNINGS:\n" err))
+
+        out)
+
       (throw (RuntimeException.
                (str "Err (" exit ") running pandoc:\n" err))))))
 
+(defn from-stream [^InputStream stream output-name]
+  (process-stream stream {:output output-name}))
+
 (defn from-files
   "Given a sorted list of files, generate a PDF using pandoc"
-  [files]
+  [files output-name]
   (from-stream
-    (files->input-stream files)))
+    (files->input-stream files)
+    output-name))
 
