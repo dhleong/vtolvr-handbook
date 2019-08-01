@@ -36,7 +36,7 @@ TK
 
 #### Heat-seeking missiles
 
-Infrared/Heat-seeking missiles like the [AIM-9](#AIM-9-Sidewinder) are
+Infrared/Heat-seeking missiles like the [AIM-9](#aim-9-sidewinder) are
 sometimes simpler to avoid than active radar-guided. Using the techniques
 above cannot hurt, of course—dogfighting tends to be about correct energy
 management—however the fact that IR missiles can be confused by appropriate
