@@ -1,0 +1,10 @@
+{:paths ["src"]
+
+ :deps
+ {org.clojure/clojure {:mvn/version "1.10.0"}}
+
+ :aliases
+ {:dev {:extra-deps {cider/cider-nrepl {:mvn/version "0.21.0"}}
+        :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
+
+  :build {:main-opts ["-m" "vtolvr-pdf.core"]}}}
