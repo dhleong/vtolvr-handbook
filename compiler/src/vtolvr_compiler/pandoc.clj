@@ -6,7 +6,7 @@
   (:import (java.io InputStream ByteArrayInputStream SequenceInputStream)))
 
 (def pandoc-opts
-  {:from "markdown"
+  {:from "gfm"
    :toc true
    :number-sections true
 
