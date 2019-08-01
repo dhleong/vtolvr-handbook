@@ -23,7 +23,9 @@
   ([^File dir] (sorted-files-in 0 dir))
   ([depth, ^File dir]
    (let [all-files (.listFiles dir)
-         sub-dirs (filter #(.isDirectory %) all-files)
+         sub-dirs (->> all-files
+                       (filter #(.isDirectory %))
+                       (sort))
          files (filter #(.isFile %) all-files)
          index (->> files
                     (filter is-index-file?)
