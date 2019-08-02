@@ -4,7 +4,7 @@
   (:require [clojure.string :as str]
             [endophile
              [core :as parse]
-             #_[hiccup :refer [to-hiccup]]]
+             [hiccup :as hiccup]]
             [vtolvr-compiler.composite :refer [files->input-stream]])
   (:import (java.io File InputStream)))
 
@@ -19,6 +19,10 @@
                                             (assoc m k true))
                                           {}))})
       parse/to-clj))
+
+(defn- clj->hiccup [clj-xml]
+  ; HACKS!
+  (#'hiccup/clj2hiccup clj-xml))
 
 (defn combine-path [last-heading level section-title]
   (let [{last-level :level last-path :path} last-heading]
@@ -58,13 +62,13 @@
   ; TODO
   (str/join "/" path))
 
-(defn section->file-pair [{path :path :as section}]
+(defn section->file-pair [{:keys [path contents] :as section}]
   [(path->file path)
 
-   ; TODO section contents
    {:title (:title section)
-    }
-   ])
+    :hiccup (->> contents
+                 (map clj->hiccup)
+                 (into [:div]))}])
 
 (defn- build-index [all-sections]
   (reduce
