@@ -3,7 +3,8 @@
 Attribute | Value
 :-|:-
 Type | air-to-surface
-Guidance | radiation
+Guidance | ARAD
 Fire-and-forget | Yes
 Cost | ?
 Mass | ?
+Radio Call | "Magnum"

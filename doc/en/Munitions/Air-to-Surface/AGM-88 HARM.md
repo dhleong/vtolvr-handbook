@@ -1,6 +1,4 @@
-### AGM-188 MARM
-
-> *Long range Anti-Radiation Missile with a unique top down attack angle.*
+### AGM-88 HARM
 
 Attribute | Value
 :-|:-
@@ -8,5 +6,5 @@ Type | air-to-surface
 Guidance | ARAD
 Fire-and-forget | Yes
 Cost | $5000 / missile
-Mass | 375kg
+Mass | 395kg
 Radio Call | "Magnum"

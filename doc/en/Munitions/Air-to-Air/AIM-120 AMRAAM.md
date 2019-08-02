@@ -8,3 +8,4 @@ Guidance | active radar-guided
 Fire-and-forget | Yes
 Cost | $1500 / missile
 Mass | 187kg
+Radio Call | "Fox Three"

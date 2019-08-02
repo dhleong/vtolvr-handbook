@@ -13,3 +13,4 @@ Guidance | infrared heat-seeking
 Fire-and-forget | Yes
 Cost | $1500 / missile
 Mass | 123kg
+Radio Call | "Fox Two"

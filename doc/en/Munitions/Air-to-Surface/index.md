@@ -81,3 +81,6 @@ you generally create a new GPS group, switch to PATH mode, and add GPS points
 as above. You may also use it in non-PATH mode, however, and the missile will
 cruise directly to the GPS point and search for a target nearby.
 
+### ARAD (Anti-radiation)
+
+TK
