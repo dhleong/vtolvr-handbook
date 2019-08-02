@@ -6,9 +6,10 @@ let you down!  With improved maneuverability, range, and a
 counter-countermeasure system, the IRIS-T is perfect for swatting pesky enemy
 aircraft when you've got better things to do than engage in dogfights.
 
-**Attribute** | Value
+Attribute | Value
 :-|:-
 Type | air-to-air
 Guidance | infrared heat-seeking
+Fire-and-forget | Yes
 Cost | $1500 / missile
 Mass | 123kg
