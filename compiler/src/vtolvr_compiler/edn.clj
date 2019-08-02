@@ -80,11 +80,12 @@
        ".edn"))
 
 (defn- build-index [all-sections]
-  (->> all-sections
-       keys
-       (reduce (fn [m title]
-                 (assoc m title (path->file [title])))
-               {})))
+  {:sections (->> all-sections
+                  keys
+                  (reduce (fn [m title]
+                            (assoc m title (path->file [title])))
+                          {}))
+   :intro (get all-sections "Introduction")})
 
 (defn- combine-partitions [partitions]
   (when-let [h (first partitions)]
@@ -126,6 +127,9 @@
 
 (defn- sections->file-pairs [sections-map]
   (->> sections-map
+
+       ; merge the intro into the index
+       (remove (comp #{"Introduction"} key))
 
        (map (fn [[title section]]
               [(path->file [title]) section]))
