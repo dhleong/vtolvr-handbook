@@ -11,8 +11,12 @@
    :number-sections true
    :standalone true
 
-   ; causing weird indenting issue...
-   ;; :top-level-division "part"
+   ; add pagebreaks around chapters
+   :top-level-division "chapter"
+
+   ; using "oneside" prevents pandoc (latex) from changing text
+   ; alignment each page (as you might want for print media)
+   :variable {:classoption "oneside"}
 
    :metadata {:title "VTOLVR Handbook"
               :subtitle "Everything you need to know and more"}})
