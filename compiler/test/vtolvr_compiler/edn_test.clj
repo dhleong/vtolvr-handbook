@@ -72,6 +72,18 @@
              1
              "Komodo")))))
 
+(deftest path->file-test
+  (testing "Single path"
+    (is (= "serenity.edn"
+           (path->file ["Serenity"])))
+
+    (is (= "firefly-class-ship-serenity.edn"
+           (path->file ["'Firefly'-class   ship, \"Serenity\""]))))
+
+  (testing "Multi path"
+    (is (= "ships/firefly-class/serenity.edn"
+           (path->file ["Ships" "'Firefly'-class" "Serenity"])))))
+
 (deftest process-stream-test
   (testing "Extract sections"
     (is (= ["Introduction"

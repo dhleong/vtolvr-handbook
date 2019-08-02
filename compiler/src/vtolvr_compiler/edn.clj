@@ -58,9 +58,19 @@
      :path (combine-path last-heading level title)
      :contents contents}))
 
+(defn- title->filename [title]
+  (-> title
+      (str/lower-case)
+      (str/replace #"[^a-z0-9]+" "-")
+
+      ; strip leading and trailing dashes (could be more efficient, but eh)
+      (str/replace #"^-*(.*?)-*$" "$1")))
+
 (defn path->file [path]
-  ; TODO
-  (str/join "/" path))
+  (str (->> path
+            (map title->filename)
+            (str/join "/"))  ; not File/separator since it's an URL path
+       ".edn"))
 
 (defn section->file-pair [{:keys [path contents] :as section}]
   [(path->file path)
@@ -75,7 +85,7 @@
     (fn [m section]
       (assoc m
              (:title section)
-             (:path section)))
+             (path->file (:path section))))
     {}
     all-sections))
 
