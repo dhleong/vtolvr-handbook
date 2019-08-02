@@ -21,16 +21,23 @@
       parse/to-clj))
 
 (defn combine-path [last-heading level section-title]
-  (let [last-level (:level last-heading)]
+  (let [{last-level :level last-path :path} last-heading]
     (cond
       (= 0 level) [section-title]
 
-      (= last-level level) (-> (:path last-heading)
+      (= last-level level) (-> last-path
                                pop
                                (conj section-title))
 
-      ; TODO
-      :else [section-title])))
+      (= (inc last-level) level) (conj last-path section-title)
+      (< level last-level) (conj
+                             (subvec last-path
+                                     0
+                                     level)
+                             section-title)
+
+      :else (throw (IllegalArgumentException.
+                     (str "Level went from " last-level " to " level))))))
 
 (defn- tag->level [header-tag]
   (-> header-tag
