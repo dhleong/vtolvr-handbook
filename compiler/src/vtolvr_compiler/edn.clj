@@ -1,7 +1,8 @@
 (ns ^{:author "Daniel Leong"
       :doc "EDN generation for website use"}
   vtolvr-compiler.edn
-  (:require [clojure.string :as str]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]
             [endophile
              [core :as parse]
              [hiccup :as hiccup]]
@@ -10,6 +11,10 @@
 
 (def ^:private markdown-extensions
   #{:tables})
+
+(defn- is-header? [tag]
+  (and tag
+       (= \h (first (name tag)))))
 
 (defn- parse-stream [^InputStream stream]
   (-> stream
@@ -41,7 +46,9 @@
                              section-title)
 
       :else (throw (IllegalArgumentException.
-                     (str "Level went from " last-level " to " level))))))
+                     (str "Level went from " last-level " to " level
+                          "\n old title: " (:title last-heading)
+                          "\n new title: " section-title))))))
 
 (defn- tag->level [header-tag]
   (-> header-tag
@@ -96,11 +103,24 @@
 
      ; process another section
      (let [last-heading (peek all-sections)
-           section (sectionify last-heading h (second headings))]
+           contents (second headings)
+
+           ; handle empty sections
+           first-tag (-> contents first :tag)
+           has-contents? (or (nil? first-tag)
+                            (not (is-header? first-tag)))
+           contents (if has-contents?
+                      contents
+                      [])
+           consumed (if has-contents?
+                      2
+                      1) ; empty section
+
+           section (sectionify last-heading h contents)]
        (cons (section->file-pair section)
              (lazy-seq
                (lazy-sectionify (conj all-sections section)
-                                (drop 2 headings)))))
+                                (drop consumed headings)))))
 
      ; no more; emit the index
      [["index.edn" (build-index all-sections)]])))
@@ -115,14 +135,15 @@
        (remove #(or (= "" %)
                     (= :comment (:type %))))
        (partition-by (fn [{tag :tag}]
-                       (if tag
-                         (= \h (first (name tag)))
-                         false)))
+                       (when (is-header? tag)
+                         tag)))
        lazy-sectionify))
 
-(defn from-stream [^InputStream stream, _output-path]
-  ; TODO
-  (process-stream stream))
+(defn from-stream [^InputStream stream, output-path]
+  (doseq [[path content] (process-stream stream)]
+    (let [full-path (io/file output-path path)]
+      (io/make-parents full-path)
+      (spit full-path content))))
 
 (defn from-files [files, ^File output-path]
   (from-stream (files->input-stream files) output-path))

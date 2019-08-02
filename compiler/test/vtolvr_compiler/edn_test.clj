@@ -108,4 +108,33 @@ A paragraph
                   ")
 
                 ->index-contents
+                keys))))
+
+  (testing "Extract nested (empty) sections"
+    (is (= ["Ship"
+            "Firefly"
+            "Serenity"
+            "Cargo"
+            "Crew"]
+
+           (->> (process-string
+                 "
+# Ship
+
+Many ships
+
+## Firefly
+
+### Serenity
+
+#### Cargo
+
+- Bobble-headed geisha dolls
+
+#### Crew
+
+- Captain: Mal Reynolds
+                  ")
+
+                ->index-contents
                 keys)))))

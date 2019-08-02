@@ -8,7 +8,8 @@
 
 (def ^:private project-root (io/file "../")) ; FIXME
 
-(def ^:private edn-path (io/file project-root "web/static/data"))
+; TODO language switching?
+(def ^:private edn-path (io/file project-root "web/static/data/en"))
 (def ^:private pdf-path (io/file project-root "vtolvr-handbook-en.pdf"))
 
 (defn generate-edn [files]
