@@ -25,12 +25,12 @@
     (cond
       (= 0 level) [section-title]
 
-      (= last-level level) (-> last-level
+      (= last-level level) (-> (:path last-heading)
                                pop
                                (conj section-title))
 
       ; TODO
-      :else [])))
+      :else [section-title])))
 
 (defn- tag->level [header-tag]
   (-> header-tag
@@ -68,23 +68,21 @@
     {}
     all-sections))
 
-(defn- lazy-sectionify [headings]
-  (letfn [(step [all-sections
-                 headings]
-            (if-let [h (first headings)]
+(defn- lazy-sectionify
+  ([headings] (lazy-sectionify [] headings))
+  ([all-sections headings]
+   (if-let [h (first headings)]
 
-              ; process another section
-              (let [last-heading (peek all-sections)
-                    section (sectionify last-heading h (second headings))]
-                (cons (section->file-pair section)
-                      (lazy-seq
-                        (step (conj all-sections section)
-                              (drop 2 headings)))))
+     ; process another section
+     (let [last-heading (peek all-sections)
+           section (sectionify last-heading h (second headings))]
+       (cons (section->file-pair section)
+             (lazy-seq
+               (lazy-sectionify (conj all-sections section)
+                                (drop 2 headings)))))
 
-              ; no more; emit the index
-              [["index.edn" (build-index all-sections)]]))]
-
-    (lazy-seq (step [] headings))))
+     ; no more; emit the index
+     [["index.edn" (build-index all-sections)]])))
 
 (defn process-stream
   "Given a stream combined markdown stream, produces a sequence of
@@ -93,8 +91,12 @@
   [^InputStream stream]
   (->> stream
        parse-stream
+       (remove #(or (= "" %)
+                    (= :comment (:type %))))
        (partition-by (fn [{tag :tag}]
-                       (= \h (first (name tag)))))
+                       (if tag
+                         (= \h (first (name tag)))
+                         false)))
        lazy-sectionify))
 
 (defn from-stream [^InputStream stream, _output-path]
