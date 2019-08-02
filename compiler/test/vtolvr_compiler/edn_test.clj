@@ -111,11 +111,7 @@ A paragraph
                 keys))))
 
   (testing "Extract nested (empty) sections"
-    (is (= ["Ship"
-            "Firefly"
-            "Serenity"
-            "Cargo"
-            "Crew"]
+    (is (= ["Ship"]
 
            (->> (process-string
                  "

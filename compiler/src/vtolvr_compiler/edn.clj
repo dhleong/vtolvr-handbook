@@ -29,8 +29,8 @@
   ; HACKS!
   (#'hiccup/clj2hiccup clj-xml))
 
-(defn combine-path [last-heading level section-title]
-  (let [{last-level :level last-path :path} last-heading]
+(defn combine-path [last-section level section-title]
+  (let [{last-level :level last-path :path} last-section]
     (cond
       (= 0 level) [section-title]
 
@@ -47,7 +47,7 @@
 
       :else (throw (IllegalArgumentException.
                      (str "Level went from " last-level " to " level
-                          "\n old title: " (:title last-heading)
+                          "\n old title: " (:title last-section)
                           "\n new title: " section-title))))))
 
 (defn- tag->level [header-tag]
@@ -56,13 +56,13 @@
       (subs 1)
       (Integer/parseInt)))
 
-(defn- sectionify [last-heading heading contents]
-  (let [{tag :tag section-title :content} (first heading)
+(defn- sectionify [last-section heading contents]
+  (let [{tag :tag section-title-parts :content} (first heading)
         level (dec (tag->level tag))
-        title (str/join section-title)]
+        title (str/join section-title-parts)]
     {:level level
      :title title
-     :path (combine-path last-heading level title)
+     :path (combine-path last-section level title)
      :contents contents}))
 
 (defn- title->filename [title]
@@ -79,51 +79,58 @@
             (str/join "/"))  ; not File/separator since it's an URL path
        ".edn"))
 
-(defn section->file-pair [{:keys [path contents] :as section}]
-  [(path->file path)
-
-   {:title (:title section)
-    :hiccup (->> contents
-                 (map clj->hiccup)
-                 (into [:div]))}])
-
 (defn- build-index [all-sections]
-  (reduce
-    (fn [m section]
-      (assoc m
-             (:title section)
-             (path->file (:path section))))
-    {}
-    all-sections))
+  (->> all-sections
+       keys
+       (reduce (fn [m title]
+                 (assoc m title (path->file [title])))
+               {})))
 
-(defn- lazy-sectionify
-  ([headings] (lazy-sectionify [] headings))
-  ([all-sections headings]
-   (if-let [h (first headings)]
+(defn- combine-partitions [partitions]
+  (when-let [h (first partitions)]
+    (let [contents (second partitions)
 
-     ; process another section
-     (let [last-heading (peek all-sections)
-           contents (second headings)
-
-           ; handle empty sections
-           first-tag (-> contents first :tag)
-           has-contents? (or (nil? first-tag)
+          ; handle empty sections
+          first-tag (-> contents first :tag)
+          has-contents? (or (nil? first-tag)
                             (not (is-header? first-tag)))
-           contents (if has-contents?
-                      contents
-                      [])
-           consumed (if has-contents?
-                      2
-                      1) ; empty section
 
-           section (sectionify last-heading h contents)]
-       (cons (section->file-pair section)
-             (lazy-seq
-               (lazy-sectionify (conj all-sections section)
-                                (drop consumed headings)))))
+          contents (if has-contents?
+                     contents
+                     [])
+          consumed (if has-contents?
+                     2
+                     1)]  ; empty section
+      (cons {:header h
+             :contents (->> contents
+                            clj->hiccup
+                            (into [:div]))}
+            (lazy-seq
+              (combine-partitions (drop consumed partitions)))))))
 
-     ; no more; emit the index
-     [["index.edn" (build-index all-sections)]])))
+(defn- eager-sectionify [sections]
+  (loop [state {}
+         sections sections]
+    (if-not (seq sections)
+      ; DONE
+      (dissoc state :last-section)
+
+      (let [{:keys [last-section]} state
+            {:keys [header contents]} (first sections)
+            new-section (sectionify last-section header contents)
+            new-state (-> state
+                          (assoc :last-section new-section)
+                          (assoc-in (:path new-section) new-section))]
+        (recur new-state
+               (next sections))))))
+
+(defn- sections->file-pairs [sections-map]
+  (->> sections-map
+
+       (map (fn [[title section]]
+              [(path->file [title]) section]))
+
+       (cons ["index.edn" (build-index sections-map)])))
 
 (defn process-stream
   "Given a stream combined markdown stream, produces a sequence of
@@ -132,12 +139,17 @@
   [^InputStream stream]
   (->> stream
        parse-stream
+
        (remove #(or (= "" %)
                     (= :comment (:type %))))
+
        (partition-by (fn [{tag :tag}]
                        (when (is-header? tag)
                          tag)))
-       lazy-sectionify))
+       combine-partitions
+
+       eager-sectionify
+       sections->file-pairs))
 
 (defn from-stream [^InputStream stream, output-path]
   (doseq [[path content] (process-stream stream)]
