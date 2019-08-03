@@ -90,8 +90,11 @@
 (defn- build-index [all-sections]
   {:sections (->> all-sections
                   keys
+                  (remove #{"Introduction"})
                   (reduce (fn [m title]
-                            (assoc m title (path->file [title])))
+                            (assoc m (keyword (title->filename title))
+                                   {:url (path->file [title])
+                                    :title title}))
                           {}))
    :intro (get all-sections "Introduction")})
 
