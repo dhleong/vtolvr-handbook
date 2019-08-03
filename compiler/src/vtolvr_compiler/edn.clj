@@ -5,7 +5,7 @@
             [clojure.string :as str]
             [endophile
              [core :as parse]
-             [hiccup :as hiccup]]
+             [utils :as endo-utils]]
             [vtolvr-compiler.composite :refer [files->input-stream]])
   (:import (java.io File InputStream)))
 
@@ -26,8 +26,16 @@
       parse/to-clj))
 
 (defn- clj->hiccup [clj-xml]
-  ; HACKS!
-  (#'hiccup/clj2hiccup clj-xml))
+  (if-let [tag (:tag clj-xml)]
+    (into (if-let [attrs (:attrs clj-xml)]
+            [(keyword tag) attrs]
+            [(keyword tag)])
+          (clj->hiccup (:content clj-xml)))
+
+    (cond
+      (seq? clj-xml) (map clj->hiccup clj-xml)
+      (string? clj-xml) (endo-utils/xml-str clj-xml)
+      :else nil)))
 
 (defn combine-path [last-section level section-title]
   (let [{last-level :level last-path :path} last-section]
