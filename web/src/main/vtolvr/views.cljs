@@ -1,10 +1,12 @@
 (ns vtolvr.views
   (:require [vtolvr.util :refer [<sub]]
             [vtolvr.views.error-boundary :refer [error-boundary]]
-            [vtolvr.views.home :as home]))
+            [vtolvr.views.home :as home]
+            [vtolvr.views.section :as section]))
 
 (def ^:private pages
-  {:home #'home/view})
+  {:home #'home/view
+   :section #'section/view})
 
 (defn loader []
   [:div "Loading"])

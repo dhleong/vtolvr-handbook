@@ -10,7 +10,10 @@
   ;; app routes declared here:
 
   (defroute "/" []
-    (navigate! :home)))
+    (navigate! :home))
+
+  (defroute "/section/:id" [id]
+    (navigate! :section (keyword id))))
 
 (defn app-routes []
   (nav/init!)
