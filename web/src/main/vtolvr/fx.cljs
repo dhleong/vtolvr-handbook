@@ -15,8 +15,18 @@
 (defn- data-url [language file]
   (str "/data/" (or language "en") "/" file))
 
+(defn- fetch-url [url callback-event]
+  (go-loop [[e result] (<! (GET url))]
+    (>evt (conj callback-event (or e result)))))
+
 (reg-fx
   :fetch/index
   (fn [language]
-    (go-loop [[e result] (<! (GET (data-url language "index.edn")))]
-      (>evt [:set-index (or e result)]))))
+    (fetch-url (data-url language "index.edn")
+               [:set-index])))
+
+(reg-fx
+  :fetch/section
+  (fn [[language id]]
+    (fetch-url (data-url language (str (name id) ".edn"))
+               [:set-section id])))

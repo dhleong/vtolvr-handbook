@@ -4,7 +4,7 @@
 
 (defn view []
   (let [intro (<sub [:intro])
-        sections (<sub [:sections])]
+        sections (<sub [:index/sections])]
     [:div.home
      [:div.intro intro]
 

@@ -2,7 +2,8 @@
   (:require [re-frame.core :refer [dispatch reg-event-db reg-event-fx
                                    path
                                    inject-cofx trim-v]]
-            [vtolvr.db :as db]))
+            [vtolvr.db :as db]
+            [vtolvr.section :as section]))
 
 (reg-event-db
   ::initialize-db
@@ -31,3 +32,24 @@
   [trim-v]
   (fn [db [data]]
     (assoc db :index data)))
+
+(reg-event-fx
+  :get-section
+  [trim-v]
+  (fn [{:keys [db]} [section-id]]
+    ; TODO language
+    {:db (assoc-in db [:sections section-id :state] :loading)
+     :fetch/section ["en" section-id]}))
+
+(reg-event-db
+  :set-section
+  [trim-v]
+  (fn [db [section-id data]]
+    (println "message=" (ex-message data))
+    (assoc-in db [:sections section-id]
+              (if (ex-message data)
+                {:state :error
+                 :error data}
+
+                {:state :loaded
+                 :section (section/post-process data)}))))

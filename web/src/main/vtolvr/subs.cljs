@@ -3,6 +3,7 @@
 
 (reg-sub :page :page)
 (reg-sub :index :index)
+(reg-sub ::sections :sections)
 
 ; ======= home ============================================
 
@@ -13,8 +14,24 @@
     (->> index :intro :contents)))
 
 (reg-sub
-  :sections
+  :index/sections
   :<- [:index]
   (fn [index]
     (->> index
          :sections)))
+
+
+; ======= section view ====================================
+
+(reg-sub
+  :section
+  :<- [:index/sections]
+  :<- [::sections]
+  (fn [[from-index loaded] [_ id]]
+    (assoc-in
+      (or (get loaded id)
+
+          {:state :unloaded
+           :section (get from-index id)})
+      [:section :id]
+      id)))
