@@ -1,12 +1,30 @@
 (ns vtolvr.views.section
-  (:require [vtolvr.util :refer [>evt <sub]]))
+  (:require [vtolvr.util :refer [>evt <sub]]
+            [vtolvr.views.error-boundary :refer [error-boundary]]))
+
+(def ^:private section-renderers {}) ; TODO
+
+(defn content-renderer [section]
+  [error-boundary
+   (:contents section)
+
+   (for [title (->> section
+                    keys
+                    (filter string?))]
+     (let [{level :level :as subsection} (get section title)]
+       ^{:key title}
+       [:<>
+        [(keyword (str "h" (inc level))) title]
+        [content-renderer subsection]]))])
 
 (defn- render-section [section]
-  ; TODO section-specific rendering? (esp munitions)
-  [:<>
-   [:div "TODO" ]
-   ; TODO there are nested sections....
-   (:contents section)])
+  (if-let [renderer (get section-renderers (:id section))]
+    ; section-specific rendering (esp munitions)
+    [renderer section]
+
+    ; default renderer
+    ; TODO table of contents?
+    [content-renderer section]))
 
 (defn loader [{:keys [state section error]}]
   (case state
