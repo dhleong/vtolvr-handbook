@@ -1,5 +1,8 @@
-(ns vtolvr.views.home)
+(ns vtolvr.views.home
+  (:require [vtolvr.util :refer [<sub]]))
 
 (defn view []
-  [:div "Hello world!"])
+  (let [index (<sub [:index])]
+    [:div "Hello world!"
+     (str index)]))
 

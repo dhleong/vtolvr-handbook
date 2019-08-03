@@ -14,3 +14,20 @@
   [trim-v]
   (fn [db page-spec]
     (assoc db :page page-spec)))
+
+
+; ======= data-loading ====================================
+
+(reg-event-fx
+  ::get-index
+  [trim-v]
+  (fn [{:keys [db]} _]
+    ; TODO language
+    {:db (dissoc db :index)
+     :fetch/index "en"}))
+
+(reg-event-db
+  :set-index
+  [trim-v]
+  (fn [db [data]]
+    (assoc db :index data)))
