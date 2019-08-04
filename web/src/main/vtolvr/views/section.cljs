@@ -28,7 +28,8 @@
 
    (for [title (->> section
                     keys
-                    (filter string?))]
+                    (filter string?)
+                    (sort))]
      (let [{level :level :as subsection} (get section title)]
        ^{:key title}
        [:<>
