@@ -1,8 +1,10 @@
 (ns vtolvr.views.section
   (:require [vtolvr.util :refer [>evt <sub idify]]
-            [vtolvr.views.error-boundary :refer [error-boundary]]))
+            [vtolvr.views.error-boundary :refer [error-boundary]]
+            [vtolvr.views.munitions :as munitions]))
 
-(def ^:private section-renderers {}) ; TODO
+(def ^:private section-renderers
+  {:munitions #'munitions/view})
 
 (defn- recursive-toc [toc-entries]
   [:ul

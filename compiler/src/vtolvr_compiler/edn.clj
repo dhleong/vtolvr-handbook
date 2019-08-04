@@ -6,7 +6,8 @@
             [endophile
              [core :as parse]
              [utils :as endo-utils]]
-            [vtolvr-compiler.composite :refer [files->input-stream]])
+            [vtolvr-compiler.composite :refer [files->input-stream]]
+            [vtolvr-compiler.edn.munitions :as munitions])
   (:import (java.io File InputStream)))
 
 (def ^:private markdown-extensions
@@ -114,9 +115,10 @@
                      2
                      1)]  ; empty section
       (cons {:header h
-             :contents (->> contents
-                            clj->hiccup
-                            (into [:div]))}
+             :contents (some->> contents
+                                seq
+                                clj->hiccup
+                                (into [:div]))}
             (lazy-seq
               (combine-partitions (drop consumed partitions)))))))
 
@@ -136,14 +138,23 @@
         (recur new-state
                (next sections))))))
 
+(defmulti post-process key)
+(defmethod post-process "Munitions"
+  [[_ section]]
+  (munitions/post-process section))
+
+(defmethod post-process :default
+  [[_ section]]
+  section)
+
 (defn- sections->file-pairs [sections-map]
   (->> sections-map
 
        ; merge the intro into the index
        (remove (comp #{"Introduction"} key))
 
-       (map (fn [[title section]]
-              [(path->file [title]) section]))
+       (map (fn [[title :as pair]]
+              [(path->file [title]) (post-process pair)]))
 
        (cons ["index.edn" (build-index sections-map)])))
 
