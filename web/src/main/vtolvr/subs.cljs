@@ -1,5 +1,6 @@
 (ns vtolvr.subs
-  (:require [re-frame.core :refer [reg-sub]]
+  (:require [clojure.string :as str]
+            [re-frame.core :refer [reg-sub]]
             [vtolvr.util :refer [idify]]))
 
 (reg-sub :page :page)
@@ -66,3 +67,42 @@
   :<- [:section/current]
   (fn [section]
     (section->toc (:section section))))
+
+
+; ======= munitions =======================================
+
+(reg-sub :munitions/filter :munitions/filter)
+
+(reg-sub
+  ::munitions-section
+  :<- [:section/current]
+  (fn [{:keys [state section]}]
+    (when (and (= :loaded state)
+               (= :munitions (:id section)))
+      section)))
+
+(reg-sub
+  :munitions/all
+  :<- [::munitions-section]
+  (fn [section]
+    (:munitions section)))
+
+(reg-sub
+  :munitions/notes
+  :<- [::munitions-section]
+  (fn [section]
+    (:notes section)))
+
+(defn filter-rejects? [filter-map m]
+  ; TODO type
+  (when-let [text (:text filter-map)]
+    (when-not (empty? text)
+      (str/includes? (:name m) text))))
+
+(reg-sub
+  :munitions/filtered
+  :<- [:munitions/all]
+  :<- [:munitions/filter]
+  (fn [[munitions filter-map]]
+    (->> munitions
+         (remove (partial filter-rejects? filter-map)))))
