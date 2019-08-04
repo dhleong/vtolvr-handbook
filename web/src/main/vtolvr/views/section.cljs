@@ -44,7 +44,6 @@
     [renderer section]
 
     ; default renderer
-    ; TODO table of contents?
     [:<>
      [content-toc]
      [content-renderer section]]))
