@@ -1,8 +1,26 @@
 (ns vtolvr.views.section
-  (:require [vtolvr.util :refer [>evt <sub]]
+  (:require [vtolvr.util :refer [>evt <sub idify]]
             [vtolvr.views.error-boundary :refer [error-boundary]]))
 
 (def ^:private section-renderers {}) ; TODO
+
+(defn- recursive-toc [toc-entries]
+  [:ul
+   (for [{:keys [title id children]} toc-entries]
+     ^{:key id}
+     [:<>
+
+      [:li [:a {:href (str "#" (name id))
+                :data-pushy-ignore true}
+            title]]
+
+      (when (seq children)
+        [recursive-toc children])])])
+
+(defn content-toc []
+  (let [toc (<sub [:section/toc])]
+    [:div.toc
+     [recursive-toc toc]]))
 
 (defn content-renderer [section]
   [error-boundary
@@ -14,7 +32,9 @@
      (let [{level :level :as subsection} (get section title)]
        ^{:key title}
        [:<>
-        [(keyword (str "h" (inc level))) title]
+        [(keyword (str "h" (inc level)))
+         {:id (idify title)}
+         title]
         [content-renderer subsection]]))])
 
 (defn- render-section [section]
@@ -24,7 +44,9 @@
 
     ; default renderer
     ; TODO table of contents?
-    [content-renderer section]))
+    [:<>
+     [content-toc]
+     [content-renderer section]]))
 
 (defn loader [{:keys [state section error]}]
   (case state
@@ -39,7 +61,7 @@
                 [:div.loading "Loading..."])))
 
 (defn view [section-id]
-  (if-let [{:keys [section] :as info} (<sub [:section section-id])]
+  (if-let [{:keys [section] :as info} (<sub [:section/current])]
     [:div.section
      [:h1 (:title section)]
 
