@@ -1,17 +1,31 @@
 (ns ^{:author "Daniel Leong"
       :doc "vtolvr.views.munitions"}
   vtolvr.views.munitions
-  (:require [reagent.core :as r]
+  (:require [clojure.string :as str]
+            [reagent.core :as r]
             [spade.core :refer [defattrs]]
             [vtolvr.styles :refer [flex theme]]
             [vtolvr.util :refer [<sub] :refer-macros [fn-click]]))
 
 (defattrs munitions []
-  [:.menu (flex :horz)]
-  [:.button {:cursor 'pointer
-             :padding "8px"}
-   [:&.selected {:color (theme :text-primary)
-                 :cursor 'default}]])
+  [:.header (merge (flex :horz :center/perpendicular)
+                   {:height "42pt"
+                    :padding-left "12pt"})
+   [:.title {:font-size "28pt"}]
+   [:.menu (flex :horz)
+    [:.button {:cursor 'pointer
+               :padding "8px"}
+     [:&.selected {:color (theme :text-primary)
+                   :text-decoration 'underline
+                   :cursor 'default}]]]]
+
+  [:.content {:position 'absolute
+              :overflow 'auto
+              :top "42pt"
+              :bottom 0
+              :width "100vw"
+              :padding "12px"
+              }])
 
 (defn munitions-page []
   (let [munitions (<sub [:munitions/filtered])]
@@ -22,15 +36,25 @@
         [:h4 (:name m)]
         [:div.contents (:contents m)]]) ]))
 
-(defn notes-page [notes]
-  [:<>
-   (for [note notes]
-     ^{:key (:path note)}
-     [:div.note
-      ; TODO
-      (when-let [path (seq (:path note))]
-        [:h4 (str path)])
-      [:div.content (:contents note)]])])
+(defn notes-page []
+  (let [notes (<sub [:munitions/notes])]
+    [:<>
+     [:ul.toc
+      (for [note notes]
+        (when-let [path (seq (:path note))]
+          ^{:key (:joined-path note)}
+          [:li [:a {:href (str "#" (:joined-path note))
+                    :data-pushy-ignore true}
+                (str/join " > " path)]]))]
+
+     (for [note notes]
+       ^{:key (:path note)}
+       [:div.note
+        ; TODO
+        (when-let [path (seq (:path note))]
+          [:h4 {:id (:joined-path note)}
+           (str/join " > " path)])
+        [:div.body (:contents note)]])]))
 
 (defn- toggle-button [menu-atom menu-key label]
   [:a {:on-click (fn-click
@@ -39,7 +63,7 @@
                           "selected")}
     label]])
 
-(defn view [{:keys [notes]}]
+(defn view [_]
   ; TODO some ideas here:
   ;  - filter by type
   ;  - filter by name search
@@ -48,11 +72,15 @@
 
   (r/with-let [menu (r/atom :munitions)]
     [:div.munitions (munitions)
+     [:div.header
 
-     [:div.menu
-      [toggle-button menu :munitions "Browse"]
-      [toggle-button menu :employment "Study"]]
+      [:div.title "Munitions"]
 
-     (case @menu
-       :munitions [munitions-page]
-       :employment [notes-page notes]) ]))
+      [:div.menu
+       [toggle-button menu :munitions "Browse"]
+       [toggle-button menu :employment "Study"]]]
+
+     [:div.content
+      (case @menu
+        :munitions [munitions-page]
+        :employment [notes-page])] ]))

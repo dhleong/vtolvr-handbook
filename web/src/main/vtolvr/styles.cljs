@@ -10,14 +10,22 @@
 
 (defglobal global-styles
   [:body {:background-color "#000"
-          :color (theme :text-primary)}]
+          :color (theme :text-primary)
+          :padding 0
+          :margin 0}]
 
   [:a {:color (theme :text-link)
        :text-decoration 'none}
    [:&:hover {:color (lighten (theme :text-link) 33)}]])
 
-(defn flex [mode]
-  {:display 'flex
-   :flex-direction (case mode
-                     :horz 'row
-                     :vert 'column)})
+(defn flex [mode & extra]
+  (reduce
+    (fn [spec arg]
+      (case arg
+        :center/perpendicular (assoc spec :align-items 'center)))
+
+    {:display 'flex
+     :flex-direction (case mode
+                       :horz 'row
+                       :vert 'column)}
+    extra))

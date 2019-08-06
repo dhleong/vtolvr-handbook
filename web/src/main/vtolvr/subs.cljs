@@ -91,7 +91,11 @@
   :munitions/notes
   :<- [::munitions-section]
   (fn [section]
-    (:notes section)))
+    (->> section
+         :notes
+         (map (fn [n]
+                (assoc n :joined-path (str/lower-case (str/join "-" (:path n))))))
+         (sort-by :joined-path))))
 
 (defn filter-rejects? [filter-map m]
   ; TODO type
