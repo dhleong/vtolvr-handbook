@@ -3,15 +3,14 @@
   vtolvr.views.munitions
   (:require [reagent.core :as r]
             [spade.core :refer [defattrs]]
-            [vtolvr.styles :refer [flex]]
+            [vtolvr.styles :refer [flex theme]]
             [vtolvr.util :refer [<sub] :refer-macros [fn-click]]))
 
 (defattrs munitions []
   [:.menu (flex :horz)]
-  [:.button {:color "#0dd"
-             :cursor 'pointer
+  [:.button {:cursor 'pointer
              :padding "8px"}
-   [:&.selected {:color "#000"
+   [:&.selected {:color (theme :text-primary)
                  :cursor 'default}]])
 
 (defn munitions-page []

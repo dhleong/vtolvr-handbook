@@ -5,6 +5,7 @@
             [vtolvr.routes :as routes]
             [vtolvr.views :as views]
             [vtolvr.fx]
+            [vtolvr.styles]
             [vtolvr.subs]))
 
 (defn ^:dev/after-load mount-root []
