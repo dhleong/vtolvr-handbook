@@ -11,6 +11,9 @@
                 [clj-commons/secretary "1.2.4"]
                 [kibu/pushy "0.3.8"]
 
+                ; style:
+                [spade "0.1.0-SNAPSHOT"]
+
                 ; util:
                 [com.cemerick/url "0.1.1"]
                 [cljs-ajax "0.8.0"]

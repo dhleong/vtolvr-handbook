@@ -2,7 +2,17 @@
       :doc "vtolvr.views.munitions"}
   vtolvr.views.munitions
   (:require [reagent.core :as r]
+            [spade.core :refer [defattrs]]
+            [vtolvr.styles :refer [flex]]
             [vtolvr.util :refer [<sub] :refer-macros [fn-click]]))
+
+(defattrs munitions []
+  [:.menu (flex :horz)]
+  [:.button {:color "#0dd"
+             :cursor 'pointer
+             :padding "8px"}
+   [:&.selected {:color "#000"
+                 :cursor 'default}]])
 
 (defn munitions-page []
   (let [munitions (<sub [:munitions/filtered])]
@@ -23,6 +33,13 @@
         [:h4 (str path)])
       [:div.content (:contents note)]])])
 
+(defn- toggle-button [menu-atom menu-key label]
+  [:a {:on-click (fn-click
+                   (reset! menu-atom menu-key))}
+   [:div.button {:class (when (= menu-key @menu-atom)
+                          "selected")}
+    label]])
+
 (defn view [{:keys [notes]}]
   ; TODO some ideas here:
   ;  - filter by type
@@ -31,18 +48,11 @@
   ;  - Show notes related to type
 
   (r/with-let [menu (r/atom :munitions)]
-    [:div.munitions
+    [:div.munitions (munitions)
 
      [:div.menu
-      [:a {:on-click (fn-click
-                       (reset! menu :munitions))}
-       [:div.button
-        "Munitions"]]
-
-      [:a {:on-click (fn-click
-                       (reset! menu :employment))}
-       [:div.button
-        "Employment"]]]
+      [toggle-button menu :munitions "Browse"]
+      [toggle-button menu :employment "Study"]]
 
      (case @menu
        :munitions [munitions-page]
