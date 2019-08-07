@@ -11,7 +11,20 @@
      {:contents [:div "Info"]}}
 
     "AIM-9"
-    {:contents [:div "Sidewinder"]}}})
+    {:contents [:div
+                [:p "The Sidewinder is a standard, heat-seeking air-to-air missile."]
+                [:table
+                 [:thead
+                  [:tr
+                   [:th {} "Attribute"]
+                   [:th {} "Value"]]]
+                 [:tbody
+                  [:tr [:td {} "Type" ] [:td {} "air-to-air"]]
+                  [:tr [:td {} "Guidance" ] [:td {} "infrared heat-seeking"]]
+                  [:tr [:td {} "Fire-and-forget" ] [:td {} "Yes"]]
+                  [:tr [:td {} "Cost" ] [:td {} "$850 / missile"]]
+                  [:tr [:td {} "Mass" ] [:td {} "120kg"]]
+                  [:tr [:td {} "Radio Call" ] [:td {} "Fox Two"]]]]]}}})
 
 (deftest post-process-test
   (testing "Index all munitions"
@@ -29,5 +42,30 @@
            (->> fake-data
                 post-process
                 :notes
-                (map :path))))))
+                (map :path)))))
 
+  (testing "Extract munitions attributes"
+    (is (= {:type :air-to-air
+            :guidance [:infrared :heat-seeking]
+            :fire-and-forget true
+            :cost "$850 / missile"
+            :mass "120kg"
+            :radio-call "Fox Two"}
+
+           (->> fake-data
+                post-process
+                :munitions
+                first
+                :attrs)))))
+
+(deftest process-attr-val-test
+  (testing "Process guidance types"
+    (is (= nil (process-attr-val :guidance "?")))
+    (is (= [:infrared] (process-attr-val :guidance "infrared")))
+    (is (= [:infrared :heat-seeking]
+           (process-attr-val :guidance "infrared heat-seeking"))))
+
+  (testing "Process Fire-and-forget"
+    (is (= nil (process-attr-val :fire-and-forget "?")))
+    (is (= true (process-attr-val :fire-and-forget "Yes")))
+    (is (= false (process-attr-val :fire-and-forget [:em "No"])))))

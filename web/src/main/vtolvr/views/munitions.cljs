@@ -23,18 +23,36 @@
               :overflow 'auto
               :top "42pt"
               :bottom 0
-              :width "100vw"
-              :padding "12px"
-              }])
+              :width "100vw"}
+   [:.container {:padding "12px"}]])
 
 (defn munitions-page []
   (let [munitions (<sub [:munitions/filtered])]
-    [:<>
-     (for [m munitions]
-       ^{:key (:name m)}
-       [:div.munition
-        [:h4 (:name m)]
-        [:div.contents (:contents m)]]) ]))
+    [:table.munitions-table
+     [:thead
+      [:tr
+       [:th "Name"]
+       [:th "Type"]
+       [:th "Guidance"]
+       [:th "Fire-and-forget?"]
+       [:th "Cost"]
+       [:th "Mass"]
+       [:th "Radio call"]]]
+
+     [:tbody
+      (for [{:keys [attrs] :as m} munitions]
+        ^{:key (:name m)}
+        [:tr
+         [:td (:name m)]
+         [:td (str (:type attrs))]
+         [:td (str (:guidance attrs))]
+         [:td (case (:fire-and-forget attrs)
+                nil "?"
+                true "Yes"
+                false "")]
+         [:td (:cost attrs)]
+         [:td (:mass attrs)]
+         [:td (:radio-call attrs "(none)")]])]]))
 
 (defn notes-page []
   (let [notes (<sub [:munitions/notes])]
@@ -81,6 +99,7 @@
        [toggle-button menu :employment "Study"]]]
 
      [:div.content
-      (case @menu
-        :munitions [munitions-page]
-        :employment [notes-page])] ]))
+      [:div.container
+       (case @menu
+         :munitions [munitions-page]
+         :employment [notes-page])]] ]))
