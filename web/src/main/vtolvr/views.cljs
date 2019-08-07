@@ -2,10 +2,12 @@
   (:require [vtolvr.util :refer [<sub]]
             [vtolvr.views.error-boundary :refer [error-boundary]]
             [vtolvr.views.home :as home]
+            [vtolvr.views.munition-detail :as munitions]
             [vtolvr.views.section :as section]))
 
 (def ^:private pages
   {:home #'home/view
+   :munitions #'munitions/view
    :section #'section/view})
 
 (defn loader []

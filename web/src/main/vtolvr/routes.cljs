@@ -13,7 +13,10 @@
     (navigate! :home))
 
   (defroute "/section/:id" [id]
-    (navigate! :section (keyword id))))
+    (navigate! :section (keyword id)))
+
+  (defroute "/munitions/:id" [id]
+    (navigate! :munitions (keyword id))))
 
 (defn app-routes []
   (nav/init!)

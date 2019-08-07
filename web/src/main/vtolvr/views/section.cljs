@@ -55,20 +55,24 @@
      [content-toc]
      [content-renderer section]]))
 
-(defn loader [{:keys [state section error]}]
-  (case state
-    :loading [with-header section
-              [:div.loading "Loading..."] ]
-    :loaded [render-section section]
-    :error (do
-             ; try to reload?
-             (>evt [:get-section (:id section)])
-             [with-header section
-              [:div.error "ERROR:" error]])
-    :unloaded (do
-                (>evt [:get-section (:id section)])
-                [with-header section
-                 [:div.loading "Loading..."]])))
+(defn loader
+  ([info] (loader info render-section))
+  ([{:keys [state section error]} render-section]
+   (case state
+     :loading [with-header section
+               [:div.loading "Loading..."] ]
+     :loaded (if (fn? render-section)
+               [render-section section]
+               render-section)
+     :error (do
+              ; try to reload?
+              (>evt [:get-section (:id section)])
+              [with-header section
+               [:div.error "ERROR:" error]])
+     :unloaded (do
+                 (>evt [:get-section (:id section)])
+                 [with-header section
+                  [:div.loading "Loading..."]]))))
 
 (defn view [section-id]
   (if-let [info (<sub [:section/current])]

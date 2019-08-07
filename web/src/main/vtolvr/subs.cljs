@@ -69,13 +69,13 @@
     (section->toc (:section section))))
 
 
-; ======= munitions =======================================
+; ======= munitions section ===============================
 
 (reg-sub :munitions/filter :munitions/filter)
 
 (reg-sub
   ::munitions-section
-  :<- [:section/current]
+  :<- [:section/by-id :munitions]
   (fn [{:keys [state section]}]
     (when (and (= :loaded state)
                (= :munitions (:id section)))
@@ -110,3 +110,14 @@
   (fn [[munitions filter-map]]
     (->> munitions
          (remove (partial filter-rejects? filter-map)))))
+
+
+; ======= munition details ================================
+
+(reg-sub
+  :munitions/by-id
+  :<- [:munitions/all]
+  (fn [munitions [_ id]]
+    (->> munitions
+         (filter #(= id (keyword (idify (:name %)))))
+         first)))

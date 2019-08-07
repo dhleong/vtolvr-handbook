@@ -5,7 +5,8 @@
             [reagent.core :as r]
             [spade.core :refer [defattrs]]
             [vtolvr.styles :refer [flex theme]]
-            [vtolvr.util :refer [<sub] :refer-macros [fn-click]]))
+            [vtolvr.util :refer [<sub idify] :refer-macros [fn-click]]
+            [vtolvr.views.widgets :refer [link]]))
 
 (defattrs munitions []
   [:.header (merge (flex :horz :center/perpendicular)
@@ -40,10 +41,10 @@
        [:th "Radio call"]]]
 
      [:tbody
-      (for [{:keys [attrs] :as m} munitions]
-        ^{:key (:name m)}
+      (for [{attrs :attrs n :name} munitions]
+        ^{:key n}
         [:tr
-         [:td (:name m)]
+         [:td [link {:href (str "munitions/" (idify n))} n]]
          [:td (str (:type attrs))]
          [:td (str (:guidance attrs))]
          [:td (case (:fire-and-forget attrs)
@@ -52,7 +53,7 @@
                 false "")]
          [:td (:cost attrs)]
          [:td (:mass attrs)]
-         [:td (:radio-call attrs "(none)")]])]]))
+         [:td (:radio-call attrs)]])]]))
 
 (defn notes-page []
   (let [notes (<sub [:munitions/notes])]
