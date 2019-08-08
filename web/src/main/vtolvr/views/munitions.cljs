@@ -4,14 +4,12 @@
   (:require [clojure.string :as str]
             [reagent.core :as r]
             [spade.core :refer [defattrs]]
-            [vtolvr.styles :refer [flex theme]]
+            [vtolvr.styles :as styles :refer [flex theme]]
             [vtolvr.util :refer [<sub idify] :refer-macros [fn-click]]
-            [vtolvr.views.widgets :refer [link]]))
+            [vtolvr.views.widgets :refer [link] :refer-macros [icon]]))
 
 (defattrs munitions []
-  [:.header (merge (flex :horz :center/perpendicular)
-                   {:height "42pt"
-                    :padding-left "12pt"})
+  [:.header styles/standard-header
    [:.title {:font-size "28pt"}]
    [:.menu (flex :horz)
     [:.button {:cursor 'pointer
@@ -92,6 +90,8 @@
   (r/with-let [menu (r/atom :munitions)]
     [:div.munitions (munitions)
      [:div.header
+
+      [link {:href ""} (icon :home)]
 
       [:div.title "Munitions"]
 

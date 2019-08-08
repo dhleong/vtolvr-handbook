@@ -16,7 +16,11 @@
 
   [:a {:color (theme :text-link)
        :text-decoration 'none}
-   [:&:hover {:color (lighten (theme :text-link) 33)}]])
+   [:&:hover {:color (lighten (theme :text-link) 33)}]
+
+   [:i.material-icons {:padding "8px"
+                       :margin-right "8px"}]
+   ])
 
 (defn flex [mode & extra]
   (reduce
@@ -29,3 +33,9 @@
                        :horz 'row
                        :vert 'column)}
     extra))
+
+(def standard-header
+  (merge (flex :horz :center/perpendicular)
+         {:height "42pt"
+          :padding-left "12pt"}))
+
