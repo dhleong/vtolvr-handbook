@@ -14,9 +14,13 @@
 
   (defroute "/section/:id" [id]
     (navigate! :section (keyword id)))
+  (defroute "/section/:id/:subsection" [id subsection]
+    (navigate! :section (keyword id) (keyword subsection)))
 
   (defroute "/munitions/:id" [id]
-    (navigate! :munitions (keyword id))))
+    (navigate! :munitions (keyword id)))
+
+  )
 
 (defn app-routes []
   (nav/init!)

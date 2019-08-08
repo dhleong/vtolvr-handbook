@@ -45,24 +45,25 @@
          [:h1 (:title section)]]
         body))
 
-(defn- render-section [section]
+(defn- render-section [section subsection-id]
   (if-let [renderer (get section-renderers (:id section))]
     ; section-specific rendering (esp munitions)
-    [renderer section]
+    [renderer section subsection-id]
 
     ; default renderer
+    ; NOTE: subsection-id is currently not used with the default renderer
     [with-header section
      [content-toc]
      [content-renderer section]]))
 
 (defn loader
   ([info] (loader info render-section))
-  ([{:keys [state section error]} render-section]
+  ([{:keys [state section error subsection-id]} render-section]
    (case state
      :loading [with-header section
                [:div.loading "Loading..."] ]
      :loaded (if (fn? render-section)
-               [render-section section]
+               [render-section section subsection-id]
                render-section)
      :error (do
               ; try to reload?
@@ -74,9 +75,9 @@
                  [with-header section
                   [:div.loading "Loading..."]]))))
 
-(defn view [section-id]
+(defn view [section-id subsection-id]
   (if-let [info (<sub [:section/current])]
     [:div.section
-     [loader info]]
+     [loader (assoc info :subsection-id subsection-id)]]
 
     [:div "No such section: " section-id]))

@@ -73,21 +73,21 @@
            (str/join " > " path)])
         [:div.body (:contents note)]])]))
 
-(defn- toggle-button [menu-atom menu-key label]
-  [:a {:on-click (fn-click
-                   (reset! menu-atom menu-key))}
-   [:div.button {:class (when (= menu-key @menu-atom)
+(defn- toggle-button [current-page url menu-key label]
+  [:a {:href url}
+   [:div.button {:class (when (= menu-key current-page)
                           "selected")}
     label]])
 
-(defn view [_]
-  ; TODO some ideas here:
-  ;  - filter by type
-  ;  - filter by name search
-  ;  - compare multiple
-  ;  - Show notes related to type
+(defn view [_ subsection-id]
+  (let [subsection-id (or subsection-id :browse)]
 
-  (r/with-let [menu (r/atom :munitions)]
+    ; TODO some ideas here:
+    ;  - filter by type
+    ;  - filter by name search
+    ;  - compare multiple
+    ;  - Show notes related to type
+
     [:div.munitions (munitions)
      [:div.header
 
@@ -96,11 +96,11 @@
       [:div.title "Munitions"]
 
       [:div.menu
-       [toggle-button menu :munitions "Browse"]
-       [toggle-button menu :employment "Study"]]]
+       [toggle-button subsection-id "/section/munitions" :browse "Browse"]
+       [toggle-button subsection-id "/section/munitions/study" :study "Study"]]]
 
      [:div.content
       [:div.container
-       (case @menu
-         :munitions [munitions-page]
-         :employment [notes-page])]] ]))
+       (case subsection-id
+         :browse [munitions-page]
+         :study [notes-page])]] ]))

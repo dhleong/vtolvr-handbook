@@ -19,9 +19,9 @@
    [:div (str e)]])
 
 (defn main []
-  (let [[page args] (<sub [:page])
+  (let [[page & args] (<sub [:page])
         index (<sub [:index])
-        page-form [(get pages page) args]]
+        page-form (into [(get pages page)] args)]
     (println "[router]" page args page-form)
 
     [error-boundary
