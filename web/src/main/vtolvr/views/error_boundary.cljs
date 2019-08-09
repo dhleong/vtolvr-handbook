@@ -39,7 +39,9 @@
                                        :on-click (fn-click
                                                    (reset! err nil))}
                                    "Try again"]]
-                            [:pre (.-stack e)]]
+                            [:pre (if (ex-message e)
+                                    (.-stack e)
+                                    (str e))]]
 
                            (into [:<>] children)))})))
 
