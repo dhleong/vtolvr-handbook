@@ -56,7 +56,7 @@
                         (throw (ex-info (str "Unable to pick new key from value `" new-value "`")
                                         {:children children})))
 
-                      (dispatch-change opts new-val)))
+                      (dispatch-change opts new-value)))
 
         value-key (current-value-key opts)]
 
