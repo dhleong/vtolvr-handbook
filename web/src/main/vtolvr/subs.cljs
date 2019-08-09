@@ -143,7 +143,8 @@
   :<- [:munitions/notes]
   (fn [all-notes [_ munition]]
     (let [{{munition-type :type guidance :guidance} :attrs} munition
-          path-prefix (name munition-type)
+          path-prefix (when munition-type
+                        (name munition-type))
           guidance-strings (->> guidance
                                 (map name)
                                 (into #{}))
