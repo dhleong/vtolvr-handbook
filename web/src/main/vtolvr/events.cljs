@@ -45,7 +45,6 @@
   :set-section
   [trim-v]
   (fn [db [section-id data]]
-    (println "message=" (ex-message data))
     (assoc-in db [:sections section-id]
               (if (ex-message data)
                 {:state :error
