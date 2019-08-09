@@ -98,10 +98,14 @@
          (sort-by :joined-path))))
 
 (defn filter-rejects? [filter-map m]
-  ; TODO type
-  (when-let [text (:text filter-map)]
-    (when-not (empty? text)
-      (str/includes? (:name m) text))))
+  (or
+    (when-let [text (:text filter-map)]
+      (when-not (empty? text)
+        (str/includes? (:name m) text)))
+
+    (when-let [by-type (:type filter-map)]
+      (when-not (= :all by-type)
+        (not= by-type (:type (:attrs m) :other))))))
 
 (reg-sub
   :munitions/filtered
@@ -110,6 +114,18 @@
   (fn [[munitions filter-map]]
     (->> munitions
          (remove (partial filter-rejects? filter-map)))))
+
+(reg-sub
+  :munition-filters/type
+  :<- [:munitions/all]
+  (fn [munitions]
+    (concat
+      (->> munitions
+           (keep (comp :type :attrs))
+           distinct
+           sort)
+      [:other])))
+
 
 
 ; ======= munition details ================================

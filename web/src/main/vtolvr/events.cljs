@@ -53,3 +53,12 @@
 
                 {:state :loaded
                  :section (section/post-process data)}))))
+
+
+; ======= munitions =======================================
+
+(reg-event-db
+  :set-munition-filter
+  [trim-v]
+  (fn [db [filter-key filter-value]]
+    (assoc-in db [:munitions/filter filter-key] filter-value)))

@@ -1,12 +1,12 @@
 (ns ^{:author "Daniel Leong"
       :doc "vtolvr.views.munitions"}
   vtolvr.views.munitions
-  (:require [clojure.string :as str]
-            [reagent.core :as r]
-            [spade.core :refer [defattrs]]
+  (:require [spade.core :refer [defattrs]]
+            [vtolvr.forms :as forms]
             [vtolvr.styles :as styles :refer [flex theme]]
             [vtolvr.util :refer [<sub idify] :refer-macros [fn-click]]
-            [vtolvr.views.widgets :refer [link] :refer-macros [icon]]))
+            [vtolvr.views.widgets :refer [link] :refer-macros [icon]]
+            [vtolvr.views.munitions.study :as study]))
 
 (defattrs munitions []
   [:.header styles/standard-header
@@ -25,53 +25,56 @@
               :width "100vw"}
    [:.container {:padding "12px"}]])
 
+(defattrs filters-style []
+  (merge (flex :horz)
+         {:padding-bottom "16px"})
+
+  [:.title {:padding-right "8px"}])
+
+(defn- munitions-filters []
+  (let [filters (<sub [:munitions/filter])]
+    [:div.filters (filters-style)
+
+     [:div.title "Filters:"]
+
+     [:div.types
+      [forms/select {:value (:type filters :all)
+                     :>evt (fn [v] [:set-munition-filter :type v])}
+       [:option {:key :all} "All Types"]
+       (for [t (<sub [:munition-filters/type])]
+         [:option {:key t} (str t)])]]
+     ]))
+
 (defn munitions-page []
   (let [munitions (<sub [:munitions/filtered])]
-    [:table.munitions-table
-     [:thead
-      [:tr
-       [:th "Name"]
-       [:th "Type"]
-       [:th "Guidance"]
-       [:th "Fire-and-forget?"]
-       [:th "Cost"]
-       [:th "Mass"]
-       [:th "Radio call"]]]
-
-     [:tbody
-      (for [{attrs :attrs n :name} munitions]
-        ^{:key n}
-        [:tr
-         [:td [link {:href (str "munitions/" (idify n))} n]]
-         [:td (str (:type attrs))]
-         [:td (str (:guidance attrs))]
-         [:td (case (:fire-and-forget attrs)
-                nil "?"
-                true "Yes"
-                false "")]
-         [:td (:cost attrs)]
-         [:td (:mass attrs)]
-         [:td (:radio-call attrs)]])]]))
-
-(defn notes-page []
-  (let [notes (<sub [:munitions/notes])]
     [:<>
-     [:ul.toc
-      (for [note notes]
-        (when-let [path (seq (:path note))]
-          ^{:key (:joined-path note)}
-          [:li [:a {:href (str "#" (:joined-path note))
-                    :data-pushy-ignore true}
-                (str/join " > " path)]]))]
+     [munitions-filters]
 
-     (for [note notes]
-       ^{:key (:path note)}
-       [:div.note
-        ; TODO
-        (when-let [path (seq (:path note))]
-          [:h4 {:id (:joined-path note)}
-           (str/join " > " path)])
-        [:div.body (:contents note)]])]))
+     [:table.munitions-table
+      [:thead
+       [:tr
+        [:th "Name"]
+        [:th "Type"]
+        [:th "Guidance"]
+        [:th "Fire-and-forget?"]
+        [:th "Cost"]
+        [:th "Mass"]
+        [:th "Radio call"]]]
+
+      [:tbody
+       (for [{attrs :attrs n :name} munitions]
+         ^{:key n}
+         [:tr
+          [:td [link {:href (str "munitions/" (idify n))} n]]
+          [:td (str (:type attrs))]
+          [:td (str (:guidance attrs))]
+          [:td (case (:fire-and-forget attrs)
+                 nil "?"
+                 true "Yes"
+                 false "")]
+          [:td (:cost attrs)]
+          [:td (:mass attrs)]
+          [:td (:radio-call attrs)]])]]]))
 
 (defn- toggle-button [current-page url menu-key label]
   [:a {:href url}
@@ -103,4 +106,4 @@
       [:div.container
        (case subsection-id
          :browse [munitions-page]
-         :study [notes-page])]] ]))
+         :study [study/view])]] ]))
