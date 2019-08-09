@@ -24,7 +24,12 @@
    [:div.content
     [section/content-renderer munition]]
 
-   ; TODO relevant usage information
+   ; relevant usage information:
+   (for [{path :path :as note} (<sub [:munitions/notes-for munition])]
+     ^{:key path}
+     [:div.content
+      [(str "h" (count path)) (last path)]
+      [section/content-renderer note]])
    ])
 
 (defn view [munition-id]

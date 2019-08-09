@@ -137,3 +137,20 @@
     (->> munitions
          (filter #(= id (keyword (idify (:name %)))))
          first)))
+
+(reg-sub
+  :munitions/notes-for
+  :<- [:munitions/notes]
+  (fn [all-notes [_ munition]]
+    (let [{{munition-type :type guidance :guidance} :attrs} munition
+          path-prefix (name munition-type)
+          guidance-strings (->> guidance
+                                (map name)
+                                (into #{}))
+          guidance-check (fn [path]
+                           (some #(str/includes? path %)
+                                 guidance-strings))]
+      (->> all-notes
+           (filter #(let [joined-path (:joined-path %)]
+                      (and (str/starts-with? joined-path path-prefix)
+                           (guidance-check joined-path))))))))
