@@ -46,7 +46,9 @@
      ]))
 
 (defn munitions-page []
-  (let [munitions (<sub [:munitions/filtered])]
+  (let [{type-filter :type} (<sub [:munitions/filter])
+        type-filtered? (not= :all (or type-filter :all))
+        munitions (<sub [:munitions/filtered])]
     [:<>
      [munitions-filters]
 
@@ -54,7 +56,8 @@
       [:thead
        [:tr
         [:th "Name"]
-        [:th "Type"]
+        (when-not type-filtered?
+          [:th "Type"])
         [:th "Guidance"]
         [:th "Fire-and-forget?"]
         [:th "Cost"]
@@ -66,7 +69,8 @@
          ^{:key n}
          [:tr
           [:td [link {:href (str "munitions/" (idify n))} n]]
-          [:td (str (:type attrs))]
+          (when-not type-filtered?
+            [:td (str (:type attrs))])
           [:td (str (:guidance attrs))]
           [:td (case (:fire-and-forget attrs)
                  nil "?"
