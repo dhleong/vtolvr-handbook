@@ -22,7 +22,8 @@
                 :output-dir "public/js"
                 :asset-path "/js"
 
-                :closure-defines {vtolvr.fx/DATA-PREFIX ""}
+                :closure-defines {vtolvr.config/site-path ""
+                                  vtolvr.config/site-prefix ""}
 
                 :modules {:main {:init-fn vtolvr.core/init}}}
 

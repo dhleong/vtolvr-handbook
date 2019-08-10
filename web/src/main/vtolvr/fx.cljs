@@ -1,6 +1,7 @@
 (ns vtolvr.fx
   (:require [clojure.core.async :refer [go-loop <!]]
             [re-frame.core :refer [reg-fx]]
+            [vtolvr.config :as config]
             [vtolvr.util :refer [>evt]]
             [vtolvr.util.http :refer [GET]]
             [vtolvr.util.nav :as nav]))
@@ -12,10 +13,8 @@
 
 ; ======= data fetching ===================================
 
-(goog-define DATA-PREFIX "")
-
 (defn- data-url [language file]
-  (str DATA-PREFIX "/data/" (or language "en") "/" file))
+  (str config/site-prefix "/data/" (or language "en") "/" file))
 
 (defn- fetch-url [url callback-event]
   (go-loop [[e result] (<! (GET url))]

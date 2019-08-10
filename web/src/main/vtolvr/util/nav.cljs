@@ -6,12 +6,13 @@
             [goog.events :as gevents]
             [goog.history.EventType :as HistoryEventType]
             [pushy.core :as pushy]
+            [vtolvr.config :as config]
             [vtolvr.util :refer [is-safari? >evt]])
   (:import goog.History))
 
 (def ^:private pushy-supported? (pushy/supported?))
 
-(def ^:private pushy-prefix "/")
+(def ^:private pushy-prefix (str "/" config/site-path))
 (def ^:private secretary-prefix (if pushy-supported?
                                   (str pushy-prefix "/")
                                   "#"))
