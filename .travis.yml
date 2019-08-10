@@ -1,5 +1,9 @@
 language: clojure
 
+install:
+    - (cd web && npm install)
+    - (cd compiler && clj -Spath)
+
 script:
     - cd web && npm run test
 
