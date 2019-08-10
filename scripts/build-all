@@ -1,4 +1,4 @@
 #!/bin/bash
 
 (cd web && npm run build) || exit 1
-(cd compiler && clj -A:build) || exit 1
+(cd compiler && clojure -A:build) || exit 1

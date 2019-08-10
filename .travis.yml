@@ -7,7 +7,7 @@ install:
     - sudo ./linux-install-1.10.1.466.sh
 
     - (cd web && npm install)
-    - (cd compiler && clj -Spath)
+    - (cd compiler && clojure -Spath)
 
 script:
     - cd web && npm run test
