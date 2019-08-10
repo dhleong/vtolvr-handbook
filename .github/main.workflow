@@ -11,18 +11,18 @@ action "Filter Master Branch" {
 action "Build JS" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680"
   needs = ["Filter Master Branch"]
-  runs = "run build"
+  args = "run build"
 }
 
-action "GitHub Action for Docker" {
+action "Build Static Assets" {
   uses = "actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19"
   needs = ["Filter Master Branch"]
-  args = "run -it --rm -v \"$PWD\":/usr/src/app -w /usr/src/app clojure clj -A:build"
+  args = "run --rm -v \"$PWD\":/usr/src/app -w /usr/src/app clojure clj -A:build"
 }
 
 action "Deploy to Github Pages" {
   uses = "maxheld83/ghpages@v0.2.1"
-  needs = ["GitHub Action for Docker", "Build JS"]
+  needs = ["Build Static Assets", "Build JS"]
   secrets = ["GH_PAT"]
   env = {
     BUILD_DIR = "web/public"
