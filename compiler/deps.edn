@@ -13,4 +13,4 @@
 
   :test {:extra-paths ["test"]}
 
-  :build {:main-opts ["-m" "vtolvr-pdf.core"]}}}
+  :build {:main-opts ["-m" "vtolvr-compiler.core"]}}}

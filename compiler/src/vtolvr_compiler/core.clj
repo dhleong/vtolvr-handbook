@@ -25,7 +25,9 @@
 
     (println "Collected files:")
     (doseq [f files]
-      (println " - " (.getPath f)))
+      (if (string? f)
+        (println " - (string) " f)
+        (println " - " (.getPath f))))
 
     (doto files
       generate-pdf
