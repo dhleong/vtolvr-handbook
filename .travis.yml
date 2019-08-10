@@ -1,5 +1,8 @@
 language: clojure
-dist: trusty
+
+addons:
+    apt:
+        update: true
 
 before_install:
     # install pandoc for PDF compilation
