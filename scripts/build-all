@@ -1,4 +1,12 @@
 #!/bin/bash
 
+# download a pre-built version of pandoc for travis
+wget https://github.com/yihui/travis-bin/raw/gh-pages/pandoc.tar.gz
+tar xzvf pandoc.tar.gz
+mkdir -p ~/.local/bin
+mv pandoc ~/.local/bin/
+
+pandoc --version
+
 (cd web && npm run build) || exit 1
 (cd compiler && clojure -A:build) || exit 1
