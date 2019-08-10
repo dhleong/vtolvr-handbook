@@ -1,12 +1,10 @@
 language: clojure
 
-addons:
-    apt:
-        update: true
-
 before_install:
     # install pandoc for PDF compilation
-    - sudo apt-get install -y pandoc
+    - wget -qO- https://get.haskellstack.org/ | sh
+    - git clone --branch 2.7.3 https://github.com/jgm/pandoc
+    - (cd pandoc && stack setup && stack install)
 
 install:
     # install clj
