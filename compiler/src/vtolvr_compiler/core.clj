@@ -10,7 +10,7 @@
 
 ; TODO language switching?
 (def ^:private edn-path (io/file project-root "web/public/data/en"))
-(def ^:private pdf-path (io/file project-root "vtolvr-handbook-en.pdf"))
+(def ^:private pdf-path (io/file project-root "web/public/vtolvr-handbook-en.pdf"))
 
 (defn generate-edn [files]
   (println "Generating EDN files")
