@@ -14,5 +14,12 @@ sudo apt-get install -y texlive-base texlive-latex-base texlive-latex-extra texl
 
 pdflatex --version
 
+# finally, compile our assets
 (cd compiler && clojure -A:build) || exit 1
 (cd web && npm run build) || exit 1
+
+# prepare for publishing if on travis
+if [ "$TRAVIS_BRANCH" = master ]
+then
+    sed -i 's|/js/main.js|/vtolvr-handbook/js/main.js|' web/public/index.html
+fi
