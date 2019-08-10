@@ -1,5 +1,6 @@
 /*.log
 /target
+/web/target
 /*-init.clj
 /web/public/js
 /web/public/data
