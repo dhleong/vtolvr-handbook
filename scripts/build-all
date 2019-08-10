@@ -16,7 +16,7 @@ pdflatex --version
 
 # finally, compile our assets
 (cd compiler && clojure -A:build) || exit 1
-(cd web && npm run build) || exit 1
+(cd web && npm run build:gh-pages) || exit 1
 
 # prepare for publishing if on travis
 if [ "$TRAVIS_BRANCH" = master ]

@@ -22,6 +22,8 @@
                 :output-dir "public/js"
                 :asset-path "/js"
 
+                :closure-defines {vtolvr.fx/DATA-PREFIX ""}
+
                 :modules {:main {:init-fn vtolvr.core/init}}}
 
           :ci {:target :karma

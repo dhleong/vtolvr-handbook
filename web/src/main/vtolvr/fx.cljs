@@ -12,8 +12,10 @@
 
 ; ======= data fetching ===================================
 
+(goog-define DATA-PREFIX "")
+
 (defn- data-url [language file]
-  (str "/data/" (or language "en") "/" file))
+  (str DATA-PREFIX "/data/" (or language "en") "/" file))
 
 (defn- fetch-url [url callback-event]
   (go-loop [[e result] (<! (GET url))]
