@@ -14,7 +14,7 @@
 ; ======= data fetching ===================================
 
 (defn- data-url [language file]
-  (str config/site-prefix "/data/" (or language "en") "/" file))
+  (str config/site-prefix "data/" (or language "en") "/" file))
 
 (defn- fetch-url [url callback-event]
   (go-loop [[e result] (<! (GET url))]

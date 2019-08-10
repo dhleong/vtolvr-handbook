@@ -2,5 +2,6 @@
       :doc "vtolvr.config"}
   vtolvr.config)
 
-(goog-define site-path "")
-(goog-define site-prefix "")
+(goog-define SITE-PREFIX "/")
+
+(defonce site-prefix SITE-PREFIX)

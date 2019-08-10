@@ -12,9 +12,9 @@
 
 (def ^:private pushy-supported? (pushy/supported?))
 
-(def ^:private pushy-prefix (str "/" config/site-path))
+(def ^:private pushy-prefix config/site-prefix)
 (def ^:private secretary-prefix (if pushy-supported?
-                                  (str pushy-prefix "/")
+                                  pushy-prefix
                                   "#"))
 
 (defn init! []
