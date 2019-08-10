@@ -20,6 +20,7 @@
     "shadow-cljs": "^2.8.45"
   },
   "scripts": {
+    "build": "shadow-cljs release :app",
     "dev": "shadow-cljs start && shadow-cljs watch :app",
     "start": "shadow-cljs start",
     "stop": "shadow-cljs stop",

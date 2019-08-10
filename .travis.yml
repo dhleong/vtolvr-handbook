@@ -1,0 +1,25 @@
+language: clojure
+
+script:
+    - cd web && npm run test
+
+    # TODO run compiler tests
+
+
+after_success:
+    # build if on the master branch (in prep for deploy)
+    - if [ "$TRAVIS_BRANCH" = master ] && [ -z "$TRAVIS_PULL_REQUEST_BRANCH" ]; then scripts/build-all || travis_terminate 1; fi
+
+cache:
+    directories:
+        - $HOME/.m2
+
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_DEPLOY # Set in travis-ci.org dashboard
+    local_dir: web/public
+    on:
+        branch: master
+
+
