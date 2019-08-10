@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "shadow-cljs release :app",
-    "build:gh-pages": "shadow-cljs release :app --config-merge '{:closure-defines {vtolvr.config/SITE-PATH \"/vtolvr-handbook/\"}}'",
+    "build:gh-pages": "shadow-cljs release :app --config-merge '{:closure-defines {vtolvr.config/SITE-PREFIX \"/vtolvr-handbook/\"}}'",
     "dev": "shadow-cljs start && shadow-cljs watch :app",
     "start": "shadow-cljs start",
     "stop": "shadow-cljs stop",
