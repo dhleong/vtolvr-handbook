@@ -10,7 +10,7 @@ install:
     - (cd compiler && clojure -Spath)
 
 script:
-    - cd web && npm run test
+    - (cd web && npm run test)
 
     # TODO run compiler tests
 
