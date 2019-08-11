@@ -4,26 +4,61 @@ We've all been there. You're cruising along, minding your own business, when
 suddenly the missile launch warning goes off. The key to surviving these
 encounters is to stay calm and analyze the situation.
 
-Orange Light | "Fox" on Radio | Situation
-:-|:-|:-
-*no* | Yes  | *Probably*, an ally has launched a missile
-Yes  | *no* | You've been targetted by an active radar-guided missile
-*no* | *no* | You've been targetted by a heat-seeking missile
+When you get the "missile launched" notification, the things you need to pay
+attention to are:
+
+1. The orange "MISSLE" warning light
+1. "Fox Two" or "Fox Three" calls on the radio (if flying with wingmen)
+
+"MISSLE" | "Fox" | Situation
+:-:|:-:|:-
+*no* | "Fox Two" | *Probably*, an ally has launched an IR missile
+Yes  | *none* | You've been targetted by an active radar-guided missile
+*no* | *none* | You've been targetted by a heat-seeking missile
 
 If a call such as "Fox 2" (infrared-guided) or "Fox 3" (active radar-guided)
-is accompanied by a missile warning, and you don't see an orange warning
-light, as indicated above this missile is *probably* an ally's aimed at
-somebody else, but you should still be wary.
+is accompanied by a missile launch notification, and you don't see the orange
+warning light, as indicated above this missile is *probably* an ally's aimed
+at somebody else, but you should still be wary.
 
 Properly identifying the type of threat is crucial to survival, as some
 evasion techniques are mutually exclusive, as you will see.
 
+#### General Strategies
+
+Situational awareness is crucial to survival. As soon as you get a "missile
+launched" notification, you have a potentially very short window of time
+before the missile locks onto you. In that window, it may be possible to
+confuse the missile's tracking systems by launching countermeasures, but
+it becomes much harder to do so once it has a lock (indicated by the orange
+"MISSILE" warning light).
+
+For radar-guided missiles, it may still be possible to confuse the missile
+(see [Beaming](#beaming) below) but in general at this point your best bet
+is to avoid it. Here, the things to remember are that:
+
+1. The missile is trying to go where it thinks you *will be*, not where you
+   are.
+1. The missile has a finite amount of fuel and energy that it can use to reach
+   you.
+
+With that in mind, here are some general strategies:
+
+- Don't run away from the missile—it will have the advantage in a direct
+  chase. Instead, prefer flying perpendicular to it, if you can, or at
+  an angle towards it, so it has to waste its energy maneuvering.
+- Dive toward the ground, or a mountain, and fly low, to try to trick the
+  missile into crashing into the ground.
+- Alternatively, if you have enough speed, climb into the air to try to
+  make the missle waste its energy following you, keeping in mind your
+  angle with the missile.
+
 #### Active radar-guided missiles
 
-Flares and other countermeasures will generally not help too much against
-these. Instead, the general strategy is to force the incoming missile to
-expend all of its energy before it can reach you. Two common maneuvers
-for accomplishing this are covered below.
+Flares will generally not help too much against these, and chaff is
+situational. The general strategies of forcing the incoming missile to expend
+all of its energy before it can reach you, as described above, are very
+relevant. Two common maneuvers for accomplishing this are covered below.
 
 ##### F-Pole Maneuver
 
@@ -31,7 +66,27 @@ TK
 
 ##### Beaming
 
-TK
+The way doppler radar tracking works, if you are moving toward or away from
+the radar site it will very easily be able to detect you against the open sky.
+When beaming, you maintain a perpendicular flight path to the line of site
+from the radar site, so that you are neither moving towards nor away from it,
+making it harder for the missile to distinguish you from the landscape.
+
+If the missile is launched at you from above (IE another aircraft) then
+beaming the missile may be sufficient to make it unable to distinguish you
+from the terrain. If it was launched from below you, however, such as from a
+surface-mounted missile launcher, you will need to make use of chaff.
+
+While maintaining a perpendicular flight path to the radar site, particularly
+as the missile approaches your aircraft, begin launching a slow but steady
+stream of chaff. Hopefully this will confuse the missile and it will break off.
+If it does not, you may need to switch strategies.
+
+It is important to remember that once you have established a perpendicular
+flight path, you will need to bank slightly towards the radar site so that you
+are orbiting it, in order to maintain the perpendicular path; otherwise, you
+will start to flight away from the radar site, and you will no longer be
+beaming.
 
 
 #### Heat-seeking missiles
