@@ -1,20 +1,20 @@
 (ns vtolvr.views.github-link
   (:require [spade.core :refer [defclass]]))
 
+; based on: http://tholman.com/github-corners/
+
 (def ^:private octocat-wave {:animation "octocat-wave 560ms ease-in-out"})
 
 (defclass github-link-style []
-  ; TODO uncomment when supported by spade:
-  ;; (at-media {:max-width "500px"}
-  ;;   [:.octo-arm octocat-wave]
-  ;;   [:&:hover
-  ;;    [:.octo-arm {:animation 'none}]])
+  (at-media {:max-width "500px"}
+    [:.octo-arm octocat-wave]
+    [:&:hover
+     [:.octo-arm {:animation 'none}]])
 
   [:&:hover
    [:.octo-arm octocat-wave]])
 
 (defn github-link []
-  ; based on: http://tholman.com/github-corners/
   [:<>
    [:style "@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}"]
    [:a {:href "https://github.com/dhleong/vtolvr-handbook"
