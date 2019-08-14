@@ -30,7 +30,8 @@
    :metadata {:title "VTOLVR Handbook"
               :subtitle "Everything you need to know and more"
               :thanks "https://github.com/dhleong/vtolvr-handbook"
-              :urlcolor link-color}})
+              :urlcolor link-color
+              :linkcolor link-color}})
 
 (defn- format-opts [[k v]]
   (let [key-str (str "--" (name k))]
