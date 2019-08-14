@@ -5,6 +5,15 @@
             [vtolvr-compiler.composite :refer [files->input-stream]])
   (:import (java.io InputStream ByteArrayInputStream SequenceInputStream)))
 
+; see: https://trycolors.com/colors/16DBA3/
+; and: https://www.tuteurs.ens.fr/noncvs/docs/xcolor/xcolor.pdf
+; basically it works like:
+;   [60% cyan, 40% green]
+; then, 83% of that + 17% white, to be roughly
+;   [50% cyan, 33% green, 17% white]
+; which is pretty close to our original link color
+(def ^:private link-color "cyan!60!green!83!white")
+
 (def pandoc-opts
   {:from "gfm"
    :toc true
@@ -19,7 +28,9 @@
    :variable {:classoption "oneside"}
 
    :metadata {:title "VTOLVR Handbook"
-              :subtitle "Everything you need to know and more"}})
+              :subtitle "Everything you need to know and more"
+              :thanks "https://github.com/dhleong/vtolvr-handbook"
+              :urlcolor link-color}})
 
 (defn- format-opts [[k v]]
   (let [key-str (str "--" (name k))]
