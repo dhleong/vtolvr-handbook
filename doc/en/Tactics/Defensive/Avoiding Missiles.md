@@ -7,10 +7,10 @@ encounters is to stay calm and analyze the situation.
 When you get the "missile launched" notification, the things you need to pay
 attention to are:
 
-1. The orange "MISSLE" warning light
+1. The orange "MISSILE" warning light
 1. "Fox Two" or "Fox Three" calls on the radio (if flying with wingmen)
 
-"MISSLE" | "Fox" | Situation
+"MISSILE" | "Fox" | Situation
 :-:|:-:|:-
 *no* | "Fox Two" | *Probably*, an ally has launched an IR missile
 Yes  | *none* | You've been targetted by an active radar-guided missile
@@ -19,7 +19,8 @@ Yes  | *none* | You've been targetted by an active radar-guided missile
 If a call such as "Fox 2" (infrared-guided) or "Fox 3" (active radar-guided)
 is accompanied by a missile launch notification, and you don't see the orange
 warning light, as indicated above this missile is *probably* an ally's aimed
-at somebody else, but you should still be wary.
+at somebody else, but you should still be wary. A red `M` on the RWR is also a
+good indication that you've been targetted by an active radar-guided missile.
 
 Properly identifying the type of threat is crucial to survival, as some
 evasion techniques are mutually exclusive, as you will see.
@@ -50,7 +51,7 @@ With that in mind, here are some general strategies:
 - Dive toward the ground, or a mountain, and fly low, to try to trick the
   missile into crashing into the ground.
 - Alternatively, if you have enough speed, climb into the air to try to
-  make the missle waste its energy following you, keeping in mind your
+  make the missile waste its energy following you, keeping in mind your
   angle with the missile.
 
 #### Active radar-guided missiles
@@ -62,7 +63,38 @@ relevant. Two common maneuvers for accomplishing this are covered below.
 
 ##### F-Pole Maneuver
 
-TK
+F-Pole refers to the distance between the launching aircraft and its target at
+the moment of missile impact[^fpole]. An F-Pole maneuver is a BVR[^bvr]
+strategy designed to maximize this distance, with the idea that by engaging
+bandits[^bandit] at a longer range you are more likely to stay out of their
+engagement zone and, consequently, more likely to survive the
+encounter.[^fpole2]
+
+[^fpole]: https://en.wikipedia.org/wiki/Air-to-air_missile#Performance
+[^fpole2]: https://forums.eagle.ru/showpost.php?p=244917&postcount=9
+
+The prototypical example of the F-Pole maneuver involves an enemy aircraft on
+a head-on trajectory towards your aircraft. In this situation, it is
+recommended to "crank" left or right of the aircraft so that your flight path
+is about a level 40-50 degrees away from theirs (you probably want to turn in
+the direction of the shorter angle, to conserve energy. As they continue to
+approach, even if they adjust course to try to intercept, any radar-guided
+missile they launch will have to make a hard turn to try to intercept you.
+
+If they do launch a missile, you can then abuse its guidance systems by
+turning in towards the enemy aircraft, probably about a 90-100 degree turn in
+the opposite direction of your original turn. At this point, you will be in a
+good position to launch a missile of your own, as you will have closed more
+distance and, by keeping the enemy within 50 degrees of you, you should still
+have a radar lock on them. This sharp turn will force the incoming missile
+to waste even more energy on a second turn, hopefully making it easy for you
+to avoid (if it's fully active, or if it's semi-active but your missile doesn't
+take out the enemy aircraft before the missile gets close enough to intercept
+you).
+
+For further reference on the F-Pole, see [this Youtube video][fpole-video].
+
+[fpole-video]: https://www.youtube.com/watch?v=c-Lx4SFMWdU
 
 ##### Beaming
 

@@ -15,7 +15,7 @@
 (def ^:private link-color "cyan!60!green!83!white")
 
 (def pandoc-opts
-  {:from "gfm"
+  {:from "markdown+footnotes+inline_notes"
    :toc true
    :number-sections true
    :standalone true

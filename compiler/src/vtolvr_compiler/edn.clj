@@ -20,6 +20,12 @@
 (defn- parse-stream [^InputStream stream]
   (-> stream
       slurp
+
+      ; strip unsupported footnote syntax
+      ; TODO can we convert them to something else?
+      (str/replace #"(?m)^\[\^.+$", "")
+      (str/replace #"\[\^[^]]+\]", "")
+
       (parse/mp {:extensions (->> markdown-extensions
                                   (reduce (fn [m k]
                                             (assoc m k true))
