@@ -5,7 +5,7 @@
             [clojure.string :as str])
   (:import (java.io File)))
 
-(defn- find-docs-dir []
+(defn find-docs-dir []
   (loop [dir (io/file "../doc")]
     (if (.isDirectory dir)
       dir

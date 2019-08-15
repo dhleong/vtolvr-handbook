@@ -4,7 +4,8 @@
   (:require [clojure.java.io :as io]
             [vtolvr-compiler.edn :as edn]
             [vtolvr-compiler.files :as files]
-            [vtolvr-compiler.pandoc :as pandoc]))
+            [vtolvr-compiler.pandoc :as pandoc]
+            [vtolvr-compiler.watch :as watch]))
 
 (def ^:private project-root (io/file "../")) ; FIXME
 
@@ -20,7 +21,7 @@
   (println "Generating PDF")
   (pandoc/from-files files (.getPath pdf-path)))
 
-(defn -main []
+(defn generate-all []
   (let [files (files/collect)]
 
     (println "Collected files:")
@@ -33,7 +34,16 @@
       generate-pdf
       generate-edn)
 
-    (println "Done!")
+    (println "Done!")))
 
-    ; TODO figure out why we don't exit cleanly...?
-    (System/exit 0)))
+(defn -main [& args]
+  (cond
+    (= ["--watch"] args)
+    (watch/start! "en" generate-all)
+
+    :else
+    (do
+      (generate-all)
+
+      ; TODO figure out why we don't exit cleanly...?
+      (System/exit 0))))
