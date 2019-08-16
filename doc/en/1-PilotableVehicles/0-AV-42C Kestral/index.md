@@ -7,3 +7,10 @@
 
 The AV-42C is the original vehicle the game launched with, and which gave it
 its name.
+
+### Distinguishing Features
+
+* Large cargo bay to the rear of the cockpit equipped with seats for carrying
+  up to eight passengers
+* Jet turbine vectoring enabling vertical take off and landing
+* Able to equip the [M230 Chain Gun](#m230-chain-gun)
