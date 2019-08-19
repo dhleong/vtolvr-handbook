@@ -8,6 +8,7 @@
 [^bvr]: **BVR**: Beyond Visual Range
 
 [agm-89]: #agm-89-anti-ship-cruise-missile
+[agm-161]: #agm-161
 
 [mfcd]: #multi-function-color-display
 [tsd]: #tactical-situation-display
