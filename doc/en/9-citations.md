@@ -7,6 +7,8 @@
 [^bogey]: **Bogey**: Any radar contact; usually, an unidentified aircaft
 [^bvr]: **BVR**: Beyond Visual Range
 
+[agm-89]: #agm-89-anti-ship-cruise-missile
+
 [mfcd]: #multi-function-color-display
 [tsd]: #tactical-situation-display
 [vtolvr]: https://store.steampowered.com/app/667970/VTOL_VR/
