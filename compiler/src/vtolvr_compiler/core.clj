@@ -21,7 +21,7 @@
   (println "Generating PDF")
   (pandoc/from-files files (.getPath pdf-path)))
 
-(defn generate-all []
+(defn build-with [generate-fn]
   (let [files (files/collect)]
 
     (println "Collected files:")
@@ -30,16 +30,26 @@
         (println " - (string) " f)
         (println " - " (.getPath f))))
 
-    (doto files
-      generate-pdf
-      generate-edn)
+    (generate-fn files)
 
     (println "Done!")))
+
+(defn generate-all []
+  (build-with (fn [files]
+                (doto files
+                  generate-pdf
+                  generate-edn))))
 
 (defn -main [& args]
   (cond
     (= ["--watch"] args)
     (watch/start! "en" generate-all)
+
+    (= ["data"] args)
+    (build-with generate-edn)
+
+    (= ["pdf"] args)
+    (build-with generate-pdf)
 
     :else
     (do
