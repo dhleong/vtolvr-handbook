@@ -15,6 +15,24 @@ From those docs we generate the PDF using a [custom compiler][3] written in
 Clojure that utilizes [pandoc][4]. The same compiler generates the files that
 are consumed by the [web application][5].
 
+### Building on macOS
+
+There are a few dependencies that we can't automatically install:
+
+```
+brew install clojure pandoc
+brew cask install mactex
+```
+
+### Building general
+
+In the `compiler` directory run:
+
+```
+clj -A:build
+```
+
+to compile the PDF and the data used by the web app.
 
 [1]: https://store.steampowered.com/app/667970/VTOL_VR/
 [2]: docs/

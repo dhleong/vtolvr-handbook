@@ -6,7 +6,7 @@
 Attribute | Value
 :-|:-
 Type | air-to-surface
-Guidance | GPS/radar
+Guidance | GPS/radar Cruise
 Fire-and-forget | Yes
 Cost | ?
 Mass | ?

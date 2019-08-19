@@ -35,11 +35,9 @@ GPS-Guided weapons are a bit more complicated than other weapons, but are also
 very accurate and can generally be employed from much safer distances, as
 well.
 
-#### Employment
-
 There are currently two types of GPS-guided weapons: the bombs, and the cruise missiles.
 
-*GPS-Guided Bombs*
+#### Employment: GPS-guided Bombs
 
 Selecting a GPS-guided bomb will put two concentric rings on your HUD, with
 the outer and inner rings representing the max radius the bomb can steer to
@@ -74,12 +72,34 @@ GPS-guided bombs also have a couple configuration options:
 > until it locks, and use `GPS-S` one more time to create a new, more
 > accurate, target.
 
-*GPS-Guided Cruise Missiles*
+#### Employment: GPS-guided Cruise Missiles
 
-Cruise Missiles are designed to follow a *path* of GPS points. To use them,
-you generally create a new GPS group, switch to PATH mode, and add GPS points
-as above. You may also use it in non-PATH mode, however, and the missile will
-cruise directly to the GPS point and search for a target nearby.
+Cruise Missiles are designed to follow a *path* of GPS points. To use them, you
+generally create a new GPS group, switch to PATH mode, and add GPS points as
+for [normal GPS-guided bombs](#employment-gps-guided-bombs). You may also use
+it in non-PATH mode, however, and the missile will cruise directly to the GPS
+point and search for a target nearby.
+
+Note that the terminal (last) GPS point, either in the path or when in non-PATH
+mode, *must not be on the target*. Cruise Missiles use the GPS to navigate to
+their attack area, then use onboard systems to autonomously seek its target, so
+if the GPS point is *on* the target you want it to find, the missile will
+likely fly right over it.
+
+##### Cruise Missile Attack Modes
+
+You can change the terminal attack mode for Cruise Missiles from the `EQUIP` or
+`SMS` screen:
+
+- *SSEvasive*: Short for Sea-Skim Evasive, the missile will fly as low to the
+  surface of the water as possible and perform snaking maneuvers to avoid
+  detection
+- *Direct*: The missile flies directly to the terminal waypoint and, as normal,
+  searches for a target there
+- *Popup*: The missile flies as per *SSEvasive* mode. At the terminal GPS point,
+  however, the missile will pitch up into the air and gain altitude, enabling a
+  wider area for target acquisition and a top-down attack vector.
+
 
 ### ARAD (Anti-radiation)
 
