@@ -1,6 +1,7 @@
 (ns vtolvr.fx
   (:require [clojure.core.async :refer [go-loop <!]]
             [re-frame.core :refer [reg-fx]]
+            [vtolvr.util.nprogress :as progress]
             [vtolvr.config :as config]
             [vtolvr.util :refer [>evt]]
             [vtolvr.util.http :refer [GET]]
@@ -17,7 +18,9 @@
   (str config/site-prefix "data/" (or language "en") "/" file))
 
 (defn- fetch-url [url callback-event]
+  (progress/start)
   (go-loop [[e result] (<! (GET url))]
+    (progress/stop)
     (>evt (conj callback-event (or e result)))))
 
 (reg-fx
