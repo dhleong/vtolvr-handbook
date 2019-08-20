@@ -1,7 +1,7 @@
 (ns ^{:author "Daniel Leong"
       :doc "vtolvr.styles"}
   vtolvr.styles
-  (:require [spade.core :refer [defglobal]]
+  (:require [spade.core :refer [defglobal defattrs]]
             [garden.color :refer [lighten]]))
 
 (def theme
@@ -39,3 +39,5 @@
          {:height "42pt"
           :padding-left "12pt"}))
 
+(defattrs loader []
+  {:padding "12px"})

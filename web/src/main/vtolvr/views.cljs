@@ -1,5 +1,6 @@
 (ns vtolvr.views
-  (:require [vtolvr.util :refer [<sub]]
+  (:require [vtolvr.styles :as styles]
+            [vtolvr.util :refer [<sub]]
             [vtolvr.views.error-boundary :refer [error-boundary]]
             [vtolvr.views.home :as home]
             [vtolvr.views.munition-detail :as munitions]
@@ -11,7 +12,7 @@
    :section #'section/view})
 
 (defn loader []
-  [:div "Loading"])
+  [:div (styles/loader) "Loading"])
 
 (defn index-error [e]
   [:<>
@@ -27,6 +28,6 @@
     [error-boundary
      (cond
        (map? index) page-form
-       (nil? index) [loader]
+       (= :loading index) [loader]
        :else [index-error index])]))
 

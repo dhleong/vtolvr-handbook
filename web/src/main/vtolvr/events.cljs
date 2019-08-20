@@ -24,7 +24,7 @@
   [trim-v]
   (fn [{:keys [db]} _]
     ; TODO language
-    {:db (dissoc db :index)
+    {:db (assoc db :index (:index db/default-db)) ; reset state
      :fetch/index "en"}))
 
 (reg-event-db

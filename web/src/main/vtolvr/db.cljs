@@ -2,5 +2,6 @@
 
 (def default-db
   {:page [:home]
+   :index :loading
    :munitions/filter {}})
 

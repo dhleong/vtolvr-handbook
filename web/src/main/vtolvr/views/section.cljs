@@ -1,5 +1,6 @@
 (ns vtolvr.views.section
-  (:require [vtolvr.util :refer [>evt <sub idify]]
+  (:require [vtolvr.styles :as styles]
+            [vtolvr.util :refer [>evt <sub idify]]
             [vtolvr.views.error-boundary :refer [error-boundary]]
             [vtolvr.views.munitions :as munitions]))
 
@@ -61,7 +62,7 @@
   ([{:keys [state section error subsection-id]} render-section]
    (case state
      :loading [with-header section
-               [:div.loading "Loading..."] ]
+               [:div (styles/loader) "Loading..."] ]
      :loaded (if (fn? render-section)
                [render-section section subsection-id]
                render-section)
@@ -73,7 +74,7 @@
      :unloaded (do
                  (>evt [:get-section (:id section)])
                  [with-header section
-                  [:div.loading "Loading..."]]))))
+                  [:div.loading (styles/loader) "Loading..."]]))))
 
 (defn view [section-id subsection-id]
   (if-let [info (<sub [:section/current])]
