@@ -1,5 +1,6 @@
 (ns vtolvr.views.section
-  (:require [vtolvr.styles :as styles]
+  (:require [spade.core :refer [defattrs]]
+            [vtolvr.styles :as styles]
             [vtolvr.util :refer [>evt <sub idify]]
             [vtolvr.views.error-boundary :refer [error-boundary]]
             [vtolvr.views.munitions :as munitions]))
@@ -7,11 +8,13 @@
 (def ^:private section-renderers
   {:munitions #'munitions/view})
 
+(defattrs section-style []
+  {:padding "12px"})
+
 (defn- recursive-toc [toc-entries]
   [:ul
    (for [{:keys [title id children]} toc-entries]
-     ^{:key id}
-     [:<>
+     [:<> {:key id}
 
       [:li [:a {:href (str "#" (name id))
                 :data-pushy-ignore true}
@@ -34,15 +37,14 @@
                     (filter string?)
                     (sort))]
      (let [{level :level :as subsection} (get section title)]
-       ^{:key title}
-       [:<>
+       [:<> {:key title}
         [(keyword (str "h" (inc level)))
          {:id (idify title)}
          title]
         [content-renderer subsection]]))])
 
 (defn- with-header [section & body]
-  (into [:<>
+  (into [:div (section-style)
          [:h1 (:title section)]]
         body))
 
