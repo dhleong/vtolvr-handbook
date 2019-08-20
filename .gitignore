@@ -11,3 +11,4 @@ node_modules
 public/js
 *.pdf
 .cpcache
+build-report.html
