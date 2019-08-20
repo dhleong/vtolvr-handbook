@@ -12,12 +12,13 @@ button will have no effect.
 
 ### Sensor of Interest
 
-Some MFCD screens can be made the Sensor of Interest (SOI). If an MFCD screen has
-this capability, the upper-right-most button will be labeled SOI. Pressing this
-button will cause the display to be surrounded with a green rectangle to indicate
-that it is SOI, and any other screen that was previously SOI will no longer be
-(there can be only one SOI at a time). When SOI, the touchpad/thumbstick of the
-right controller can be used to control the sensor in a context-dependent way:
+Some MFCD screens can be made the Sensor of Interest (SOI). If an MFCD screen
+has this capability, the upper-right-most button will be labeled SOI. Pressing
+this button will cause the display to be surrounded with a green rectangle to
+indicate that it is SOI, and any other screen that was previously SOI will no
+longer be (there can be only one SOI at a time). When SOI, the
+touchpad/thumbstick of the right controller can be used to control the sensor
+in a context-dependent way:
 
 Page | Touchpad/thumbstick use
 :-|:-
