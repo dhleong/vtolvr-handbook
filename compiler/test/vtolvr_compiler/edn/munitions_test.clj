@@ -24,7 +24,18 @@
                   [:tr [:td {} "Fire-and-forget" ] [:td {} "Yes"]]
                   [:tr [:td {} "Cost" ] [:td {} "$850 / missile"]]
                   [:tr [:td {} "Mass" ] [:td {} "120kg"]]
-                  [:tr [:td {} "Radio Call" ] [:td {} "Fox Two"]]]]]}}})
+                  [:tr [:td {} "Radio Call" ] [:td {} "Fox Two"]]]]]}}
+
+   "Air-to-Surface"
+   {"GPS-guided"
+    {"Employment: GPS-guided Bombs"
+     {:contents [:div "Info"]}
+
+     "Employment: GPS-guided Cruise Missiles"
+     {:contents [:div "Info"]
+
+      "Cruise Missile Attack Modes"
+      {:contents [:div "Info"]}}}}})
 
 (deftest post-process-test
   (testing "Index all munitions"
@@ -37,7 +48,13 @@
 
   (testing "Index all notes"
     (is (= [["Air-to-Air"]
-            ["Air-to-Air" "Employment" "Heat-seeking"]]
+            ["Air-to-Air" "Employment" "Heat-seeking"]
+            ["Air-to-Surface" "GPS-guided" "Employment: GPS-guided Bombs"]
+            ["Air-to-Surface" "GPS-guided"
+             "Employment: GPS-guided Cruise Missiles"]
+            ["Air-to-Surface" "GPS-guided"
+             "Employment: GPS-guided Cruise Missiles"
+             "Cruise Missile Attack Modes"]]
 
            (->> fake-data
                 post-process

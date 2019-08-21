@@ -6,7 +6,9 @@
             [vtolvr-compiler.util :refer [deblank idify]]))
 
 (defn- notes-path? [path]
-  (some #{"Employment"} path))
+  (some (fn [entry]
+          (str/includes? entry "Employment"))
+        path))
 
 (defn- gather-munitions-paths
   ([section] (gather-munitions-paths {} section []))
