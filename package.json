@@ -7,9 +7,12 @@
     "dev:web": "cd web && npm run dev",
     "dev:compiler": "cd compiler && clojure -A:dev",
 
-    "build": "npm run build:assets && (cd web && npm run build)",
+    "build": "npm run build:assets && npm run build:web",
+    "build:gh-pages": "npm run build:assets && npm run build:web:gh-pages",
     "build:assets": "cd compiler && clojure -A:build",
-    "build:ci": "scripts/build-all",
+    "build:ci": "scripts/build-ci",
+    "build:web": "cd web && npm run build",
+    "build:web:gh-pages": "cd web && npm run build:gh-pages",
     "build:watch": "cd compiler && clojure -A:watch",
 
     "install": "npm run install:web && npm run install:compiler",

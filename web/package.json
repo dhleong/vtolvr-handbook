@@ -30,6 +30,6 @@
     "watch": "shadow-cljs watch :app",
     "test": "shadow-cljs compile ci && karma start --single-run"
   },
-  "author": "",
+  "author": "Daniel Leong",
   "license": "ISC"
 }

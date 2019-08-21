@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if ! [ -z "$TRAVIS_BRANCH" ]
+then
+    # download a pre-built version of pandoc for travis
+    wget -q https://github.com/yihui/travis-bin/raw/gh-pages/pandoc.tar.gz
+    tar xzvf pandoc.tar.gz
+    mkdir -p ~/.local/bin
+    mv pandoc ~/.local/bin/
+
+    # install pdflatex
+    sudo apt-get -qq update
+    sudo apt-get install -y texlive-base texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra lmodern
+fi
+
+pandoc --version
+
+pdflatex --version
+
+# finally, compile our assets
+npm run build:gh-pages || exit 1
+
+# prepare for publishing if on travis
+if [ "$TRAVIS_BRANCH" = master ]
+then
+    sed -i 's|/js/main.js|/vtolvr-handbook/js/main.js|' web/public/index.html
+fi
