@@ -8,7 +8,7 @@
             [vtolvr.views.widgets :refer [link] :refer-macros [icon]]
             [vtolvr.views.munitions.study :as study]))
 
-(defattrs munitions []
+(defattrs munitions-attrs []
   [:.header styles/standard-header
    [:.title {:font-size "28pt"}]
    [:.menu (flex :horz)
@@ -73,14 +73,11 @@
        (for [{attrs :attrs n :name} munitions]
          ^{:key n}
          [:tr
-          [:td [link {:href (str "munitions/" (idify n))} n]]
+          [:td [link {:href (:link attrs)} n]]
           (when-not type-filtered?
-            [:td (str (:type attrs))])
-          [:td (str (:guidance attrs))]
-          [:td (case (:fire-and-forget attrs)
-                 nil "?"
-                 true "Yes"
-                 false "")]
+            [:td (:type attrs)])
+          [:td (:guidance attrs)]
+          [:td (:fire-and-forget attrs)]
           [:td (:cost attrs)]
           [:td (:mass attrs)]
           [:td (:radio-call attrs)]])]]]))
@@ -100,7 +97,7 @@
     ;  - compare multiple
     ;  - Show notes related to type
 
-    [:div.munitions (munitions)
+    [:div.munitions (munitions-attrs)
      [:div.header
 
       [link {:href ""} (icon :home)]

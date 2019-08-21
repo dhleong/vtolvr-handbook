@@ -82,10 +82,29 @@
       section)))
 
 (reg-sub
-  :munitions/all
+  ::munitions-all
   :<- [::munitions-section]
   (fn [section]
     (:munitions section)))
+
+(reg-sub
+  :munitions/all
+  :<- [::munitions-all]
+  (fn [munitions]
+    (map (fn [{n :name :as m}]
+           (update m :attrs
+                   (fn [attrs]
+                     (-> attrs
+                         (update :type str)
+                         (assoc :link (str "munitions/" (idify n))
+                                :guidance (if (= false (:guidance attrs))
+                                            "None"
+                                            (str (:guidance attrs)))
+                                :fire-and-forget (case (:fire-and-forget attrs)
+                                                   nil "?"
+                                                   true "Yes"
+                                                   false ""))))))
+         munitions)))
 
 (reg-sub
   :munitions/notes
