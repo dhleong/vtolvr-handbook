@@ -12,9 +12,9 @@
     "build:ci": "scripts/build-all",
     "build:watch": "cd compiler && clojure -A:watch",
 
-    "setup": "npm run setup:web && npm run setup:compiler",
-    "setup:web": "cd web && npm install",
-    "setup:compiler": "cd compiler && clojure -Spath",
+    "install": "npm run install:web && npm run install:compiler",
+    "install:web": "cd web && npm install",
+    "install:compiler": "cd compiler && clojure -Spath",
 
     "test": "npm run test:web && npm run test:compiler",
     "test:web": "cd web && npm run test",
