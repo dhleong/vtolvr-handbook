@@ -31,6 +31,11 @@
 
   [:.title {:padding-right "8px"}])
 
+(defattrs munitions-table-attrs []
+  {:border-collapse 'collapse}
+
+  [:tr:hover {:background-color "#222"}])
+
 (defn- munitions-filters []
   (let [filters (<sub [:munitions/filter])]
     [:div.filters (filters-style)
@@ -52,7 +57,7 @@
     [:<>
      [munitions-filters]
 
-     [:table.munitions-table
+     [:table (munitions-table-attrs)
       [:thead
        [:tr
         [:th "Name"]
