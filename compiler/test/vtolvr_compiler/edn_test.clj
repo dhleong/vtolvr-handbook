@@ -7,9 +7,8 @@
   (process-stream
     (io/input-stream (.getBytes s))))
 
-(defn ->index-contents [section-files]
+(defn ->index [section-files]
   (->> section-files
-
        (filter (comp #{"index.edn"} first))
 
        ; first (only) match
@@ -17,6 +16,17 @@
 
        ; get the value from the pair
        second))
+
+(defn ->index-sections [section-files]
+  (->> section-files
+
+       ->index
+
+       ; the index is in :sections
+       :sections
+
+       (map (fn [[_ {:keys [title]}]]
+              title))))
 
 (deftest combine-path-test
   (testing "Initial path"
@@ -86,12 +96,7 @@
 
 (deftest process-stream-test
   (testing "Extract sections"
-    (is (= ["Introduction"
-            "Cargo Manifest"
-            "Crew Manifest"]
-
-           (->> (process-string
-                 "
+    (let [processed (process-string "
 # Introduction
 
 An Intro
@@ -105,16 +110,16 @@ A paragraph
 # Crew Manifest
 
 - Mal Reynolds
-                  ")
+                  ")]
 
-                ->index-contents
-                keys))))
+      (is (not (nil? (:intro (->index processed)))))
+      (is (= ["Cargo Manifest"
+              "Crew Manifest"]
+
+             (->index-sections processed)))))
 
   (testing "Extract nested (empty) sections"
-    (is (= ["Ship"]
-
-           (->> (process-string
-                 "
+    (let [processed (process-string "
 # Ship
 
 Many ships
@@ -130,7 +135,8 @@ Many ships
 #### Crew
 
 - Captain: Mal Reynolds
-                  ")
+                  ")]
 
-                ->index-contents
-                keys)))))
+      (is (nil? (:intro (->index processed))))
+      (is (= ["Ship"]
+             (->index-sections processed))))))
