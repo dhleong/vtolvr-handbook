@@ -6,11 +6,18 @@
   "scripts": {
     "dev:web": "cd web && npm run dev",
     "dev:compiler": "cd compiler && clojure -A:dev",
+
     "build": "npm run build:assets && (cd web && npm run build)",
     "build:assets": "cd compiler && clojure -A:build",
     "build:ci": "scripts/build-all",
     "build:watch": "cd compiler && clojure -A:watch",
-    "test": "npm run test:web && echo 'TODO: run compiler tests'",
-    "test:web": "cd web && npm run test"
+
+    "setup": "npm run setup:web && npm run setup:compiler",
+    "setup:web": "cd web && npm install",
+    "setup:compiler": "cd compiler && clojure -Spath",
+
+    "test": "npm run test:web && npm run test:compiler",
+    "test:web": "cd web && npm run test",
+    "test:compiler": "cd compiler && clojure -A:test"
   }
 }
