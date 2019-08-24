@@ -23,6 +23,9 @@
    ; add pagebreaks around chapters
    :top-level-division "chapter"
 
+   ; fix image alignment in tables
+   :filter "table_filter.py"
+
    ; using "oneside" prevents pandoc (latex) from changing text
    ; alignment each page (as you might want for print media)
    :variable {:classoption "oneside"}

@@ -5,15 +5,18 @@
             [clojure.string :as str])
   (:import (java.io File)))
 
-(defn find-docs-dir []
-  (loop [dir (io/file "../doc")]
+(defn- find-dir [dir-name]
+  (loop [dir (io/file ".." dir-name)]
     (if (.isDirectory dir)
       dir
       (if-let [p (.getParent dir)]
-        (recur (io/file p "doc"))
+        (recur (io/file p dir-name))
         (throw (IllegalStateException.
-                 (str "Couldn't find docs dir; started at: "
-                      (.getAbsoluteFile (io/file "../doc")))))))))
+                 (str "Couldn't find `" dir-name "` dir; started at: "
+                      (.getAbsoluteFile (io/file ".." dir-name)))))))))
+
+(def find-docs-dir (partial find-dir "doc"))
+(def find-web-dir (partial find-dir "web"))
 
 (defn- is-index-file? [^File f]
   (= "index.md" (.getName f)))

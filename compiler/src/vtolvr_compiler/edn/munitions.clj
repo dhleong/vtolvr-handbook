@@ -3,7 +3,8 @@
   vtolvr-compiler.edn.munitions
   (:require [clojure.string :as str]
             [com.rpl.specter :as sp]
-            [vtolvr-compiler.util :refer [deblank idify]]))
+            [vtolvr-compiler.util :refer [deblank idify]]
+            [vtolvr-compiler.selectors :refer [hiccup-el]]))
 
 (defn- notes-path? [path]
   (some (fn [entry]
@@ -33,19 +34,7 @@
            state
            children))))))
 
-(defn- hiccup-el [el]
-  (sp/recursive-path
-    [] p
-    (sp/cond-path
-      (fn [v]
-        (and (vector? v)
-             (= el (first v))))
-      sp/STAY
 
-      vector?
-      [sp/ALL p]
-
-      :else sp/STOP)))
 
 (defn- table-with-attrs [v]
   (and (vector? v)
