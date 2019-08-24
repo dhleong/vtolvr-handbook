@@ -9,7 +9,7 @@ install:
 
     # needed to properly render images (in tables)
     - sudo pip install pandocfilters
-    - sudo apt-get install librsvg2-dev
+    - sudo apt-get install librsvg2-bin
 
     - npm ci
 
