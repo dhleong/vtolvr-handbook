@@ -1,7 +1,10 @@
 (ns vtolvr-compiler.edn-test
   (:require [clojure.java.io :as io]
             [clojure.test :refer :all]
-            [vtolvr-compiler.edn :refer :all]))
+            [vtolvr-compiler.edn :refer :all]
+            [com.rpl.specter :as sp]
+            [vtolvr-compiler.files :as files]
+            [vtolvr-compiler.selectors :refer [hiccup-el]]))
 
 (defn process-string [s]
   (process-stream
@@ -140,3 +143,28 @@ Many ships
       (is (nil? (:intro (->index processed))))
       (is (= ["Ship"]
              (->index-sections processed))))))
+
+(defn ->img [hiccup]
+  (->> hiccup
+       (sp/select-first [(hiccup-el :img)])))
+
+(defn- asset-path [asset-name]
+  (.getAbsolutePath
+    (io/file (files/find-web-dir)
+             "public/assets"
+             asset-name)))
+
+(deftest process-images-test
+  (testing "Rewrite image URLs"
+    (let [processed (process-string (str "
+# Introduction
+
+![](" (asset-path "serenity.svg") ")"))
+          img (-> processed
+                   ->index
+                   :intro
+                   :contents
+                   ->img)]
+
+      (is (= "/assets/serenity.svg"
+             (:src (second img)))))))

@@ -3,11 +3,13 @@
   vtolvr-compiler.edn
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
+            [com.rpl.specter :as sp]
             [endophile
              [core :as parse]
              [utils :as endo-utils]]
             [vtolvr-compiler.composite :refer [files->input-stream]]
-            [vtolvr-compiler.edn.munitions :as munitions])
+            [vtolvr-compiler.edn.munitions :as munitions]
+            [vtolvr-compiler.selectors :refer [hiccup-el]])
   (:import (java.io File InputStream)))
 
 (def ^:private markdown-extensions
@@ -105,6 +107,17 @@
                           {}))
    :intro (get all-sections "Introduction")})
 
+(defn- process-hiccup-img [{:keys [src] :as attrs}]
+  (let [f (io/file src)]
+    (when-not (.exists f)
+      (println "WARN: image file at " f " does not exist"))
+    (assoc attrs :src (str/replace src #"^.*/public/" "/"))))
+
+(defn- process-hiccup [hiccup]
+  (->> hiccup
+       (sp/transform [sp/ALL (hiccup-el :img) 1]
+                     process-hiccup-img)))
+
 (defn- combine-partitions [partitions]
   (when-let [h (first partitions)]
     (let [contents (second partitions)
@@ -124,6 +137,7 @@
              :contents (some->> contents
                                 seq
                                 clj->hiccup
+                                process-hiccup
                                 (into [:div]))}
             (lazy-seq
               (combine-partitions (drop consumed partitions)))))))
