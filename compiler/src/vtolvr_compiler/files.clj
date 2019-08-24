@@ -25,7 +25,10 @@
          sub-dirs (->> all-files
                        (filter #(.isDirectory %))
                        (sort))
-         files (filter #(.isFile %) all-files)
+         files (filter #(and (.isFile %)
+                             (str/ends-with? (.getName %)
+                                             ".md"))
+                       all-files)
          index (->> files
                     (filter is-index-file?)
                     first)
@@ -42,8 +45,9 @@
        index
        (cons index children)
 
-       ; no explicit index? generate a fake one
-       (> depth 0)
+       ; no explicit index? generate a fake one (if it has any content files)
+       (and (seq children)
+            (> depth 0))
        (cons (str (str/join "" (repeat depth "#"))
                   " "
                   (.getName dir))
