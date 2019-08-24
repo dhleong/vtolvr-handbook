@@ -22,6 +22,7 @@ There are a few dependencies that we can't automatically install:
 ```
 brew install clojure pandoc librsvg
 brew cask install mactex
+pip install pandocfilters
 ```
 
 ### Building general
