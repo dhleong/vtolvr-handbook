@@ -2,7 +2,8 @@
       :doc "Compositing MD files"}
   vtolvr-compiler.composite
   (:require [clojure.java.io :as io]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [vtolvr-compiler.files :as files])
   (:import (java.io File InputStream ByteArrayInputStream SequenceInputStream)
            (java.util Collections)))
 
@@ -19,14 +20,18 @@
 
 (defmulti ->markdown-stream type)
 (defmethod ->markdown-stream File [^File o]
-  ; files can directly become input streams
   (let [contents (slurp o)]
     (-> contents
+
+        ; rewrite urls to be relative to the web/assets dir
         (str/replace #"!\[([^]]*)\]\(([^)]+)\)"
                      (fn [[_ caption raw-url]]
-                       (let [full-url (io/file (.getParentFile o) raw-url)
+                       (let [full-url (io/file
+                                        (files/find-web-dir)
+                                        "public/assets" raw-url)
                              resolved-url (.getAbsolutePath full-url)]
                          (str "![" caption "](" resolved-url ")"))))
+
         (.getBytes))))
 (defmethod ->markdown-stream String [^String o]
   (.getBytes o))
