@@ -7,8 +7,9 @@ install:
     - chmod +x linux-install-1.10.1.466.sh
     - sudo ./linux-install-1.10.1.466.sh
 
-    # needed to fix table layout for pdf generation:
+    # needed to properly render images (in tables)
     - sudo pip install pandocfilters
+    - sudo apt-get install librsvg2-dev
 
     - npm ci
 
