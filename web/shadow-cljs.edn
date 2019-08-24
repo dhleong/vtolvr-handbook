@@ -16,6 +16,7 @@
 
                 ; util:
                 [com.cemerick/url "0.1.1"]
+                [com.rpl/specter "1.1.2"]
                 [cljs-ajax "0.8.0"]]
 
  :builds {:app {:target :browser
