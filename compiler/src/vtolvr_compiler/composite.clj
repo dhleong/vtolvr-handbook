@@ -1,7 +1,8 @@
 (ns ^{:author "Daniel Leong"
       :doc "Compositing MD files"}
   vtolvr-compiler.composite
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str])
   (:import (java.io File InputStream ByteArrayInputStream SequenceInputStream)
            (java.util Collections)))
 
@@ -19,7 +20,14 @@
 (defmulti ->markdown-stream type)
 (defmethod ->markdown-stream File [^File o]
   ; files can directly become input streams
-  o)
+  (let [contents (slurp o)]
+    (-> contents
+        (str/replace #"!\[([^]]*)\]\(([^)]+)\)"
+                     (fn [[_ caption raw-url]]
+                       (let [full-url (io/file (.getParentFile o) raw-url)
+                             resolved-url (.getAbsolutePath full-url)]
+                         (str "![" caption "](" resolved-url ")"))))
+        (.getBytes))))
 (defmethod ->markdown-stream String [^String o]
   (.getBytes o))
 

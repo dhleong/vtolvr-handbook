@@ -20,7 +20,7 @@ are consumed by the [web application][5].
 There are a few dependencies that we can't automatically install:
 
 ```
-brew install clojure pandoc
+brew install clojure pandoc librsvg
 brew cask install mactex
 ```
 
