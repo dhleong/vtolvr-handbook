@@ -62,8 +62,8 @@ GPS-guided bombs also have a couple configuration options:
     - Manual: The default mode
     - Auto: After each trigger pull, the next target in the GPS group will be
       selected
-    - Dumb: The bomb acts like an unguided bomb using [CCRP](#ccrp-employment)
-      (see below).
+    - Dumb: The bomb acts like an unguided bomb using [CCRP][ccrp] or
+      [CCIP][ccip].
 - Deploy Rate: TK?
 
 > **NOTE**: If you want a bit more accuracy from your MAP-created GPS targets,

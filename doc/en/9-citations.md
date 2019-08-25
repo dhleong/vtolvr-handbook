@@ -11,6 +11,8 @@
 [agm-161]: #agm-161
 
 [arad]: #anti-radiation-attack-display
+[ccip]: #employment-ccip
+[ccrp]: #employment-ccrp
 [mfcd]: #multi-function-color-display
 [tsd]: #tactical-situation-display
 [vtolvr]: https://store.steampowered.com/app/667970/VTOL_VR/
