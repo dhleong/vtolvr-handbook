@@ -1,4 +1,4 @@
-## Multi-Function Color Display
+### Multi-Function Color Display
 
 With at least two standard on every aircraft, the Multi-Function Color Display
 (MFCD) is your primary means of interaction with the aircraft's systems. While
@@ -10,7 +10,7 @@ be generally shown in the center of the display, and labels will be positioned
 adjacent to the buttons. If there is no label next to a button, pressing that
 button will have no effect.
 
-### Sensor of Interest
+#### Sensor of Interest
 
 Some MFCD screens can be made the Sensor of Interest (SOI). If an MFCD screen
 has this capability, the upper-right-most button will be labeled SOI. Pressing

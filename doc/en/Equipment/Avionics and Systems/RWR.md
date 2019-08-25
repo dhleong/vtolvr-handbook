@@ -1,4 +1,4 @@
-## Radar Warning Receiver
+### Radar Warning Receiver
 
 The Radar Warning Receiver (RWR) system in your aircraft detects hostile radar
 signals and is used to maintain situational awareness about potential threats.
