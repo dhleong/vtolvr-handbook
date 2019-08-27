@@ -1,6 +1,6 @@
 (ns vtolvr.subs
   (:require [clojure.string :as str]
-            [re-frame.core :refer [reg-sub]]
+            [re-frame.core :refer [reg-sub subscribe]]
             [vtolvr.util :refer [idify]]))
 
 (reg-sub :page :page)
@@ -85,18 +85,20 @@
   ::munitions-all
   :<- [::munitions-section]
   (fn [section]
-    (:munitions section)))
+    (->> (:munitions section)
+         (map (fn [{n :name :as m}]
+                (assoc m :id (keyword (idify n))))))))
 
 (reg-sub
   :munitions/all
   :<- [::munitions-all]
   (fn [munitions]
-    (map (fn [{n :name :as m}]
+    (map (fn [{id :id :as m}]
            (update m :attrs
                    (fn [attrs]
                      (-> attrs
                          (update :type str)
-                         (assoc :link (str "munitions/" (idify n))
+                         (assoc :link (str "munitions/" (name id))
                                 :guidance (if (= false (:guidance attrs))
                                             "None"
                                             (str (:guidance attrs)))
@@ -149,28 +151,51 @@
 
 ; ======= munition details ================================
 
+(defn- munition-by-id [all-munitions id]
+  (->> all-munitions
+       (filter #(= id (:id %)))
+       first))
+
 (reg-sub
   :munitions/by-id
   :<- [:munitions/all]
   (fn [munitions [_ id]]
-    (->> munitions
-         (filter #(= id (keyword (idify (:name %)))))
-         first)))
+    (munition-by-id munitions id)))
 
 (reg-sub
+  ::munition-by-id
+  :<- [::munitions-all]
+  (fn [munitions [_ id]]
+    (munition-by-id munitions id)))
+
+; given a public munition view, load notes for it
+(reg-sub
   :munitions/notes-for
-  :<- [:munitions/notes]
-  (fn [all-notes [_ munition]]
+
+  (fn [[_ munition]]
+    [(subscribe [:munitions/notes])
+
+     ; NOTE for simplicity, use the original form, not the display one
+     (subscribe [::munition-by-id (:id munition)])])
+
+  (fn [[all-notes munition] _]
     (let [{{munition-type :type guidance :guidance} :attrs} munition
-          path-prefix (when munition-type
-                        (name munition-type))
-          guidance-strings (->> guidance
-                                (map name)
-                                (into #{}))
+          unguided? (= false guidance)
+          path-prefix (if unguided?
+                        "unguided"
+                        (when munition-type
+                          (name munition-type)))
+          guidance-strings (if unguided?
+                             #{"unguided"}
+                             (->> guidance
+                                  (map name)
+                                  (into #{})))
           guidance-check (fn [path]
                            (some #(str/includes? path %)
                                  guidance-strings))]
+      (println "FILTER " path-prefix " / " unguided? guidance)
       (->> all-notes
            (filter #(let [joined-path (:joined-path %)]
+                      (println joined-path)
                       (and (str/starts-with? joined-path path-prefix)
                            (guidance-check joined-path))))))))
