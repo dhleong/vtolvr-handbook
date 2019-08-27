@@ -10,7 +10,7 @@
 
 (defattrs munitions-attrs []
   [:.header styles/standard-header
-   [:.title {:font-size "28pt"}]
+   [:.title styles/standard-title]
    [:.menu (flex :horz)
     [:.button {:cursor 'pointer
                :padding "8px"}

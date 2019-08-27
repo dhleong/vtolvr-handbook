@@ -3,13 +3,17 @@
             [vtolvr.styles :as styles]
             [vtolvr.util :refer [>evt <sub idify]]
             [vtolvr.views.error-boundary :refer [error-boundary]]
-            [vtolvr.views.munitions :as munitions]))
+            [vtolvr.views.munitions :as munitions]
+            [vtolvr.views.widgets :refer [link] :refer-macros [icon]]))
 
 (def ^:private section-renderers
   {:munitions #'munitions/view})
 
-(defattrs section-style []
-  {:padding "12px"})
+(defattrs section-attrs []
+  {:padding "12px"}
+
+  [:.header styles/standard-header
+   [:.title styles/standard-title]])
 
 (defn- recursive-toc [toc-entries]
   [:ul
@@ -44,8 +48,10 @@
         [content-renderer subsection]]))])
 
 (defn- with-header [section & body]
-  (into [:div (section-style)
-         [:h1 (:title section)]]
+  (into [:div (section-attrs)
+         [:div.header
+          [link {:href ""} (icon :home)]
+          [:div.title (:title section)]]]
         body))
 
 (defn- render-section [section subsection-id]

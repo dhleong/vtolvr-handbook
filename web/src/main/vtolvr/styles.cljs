@@ -39,5 +39,8 @@
          {:height "42pt"
           :padding-left "12pt"}))
 
+(def standard-title
+  {:font-size "28pt"})
+
 (defattrs loader []
   {:padding "12px"})
