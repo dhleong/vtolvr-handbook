@@ -181,6 +181,9 @@
   (fn [[all-notes munition] _]
     (let [{{munition-type :type guidance :guidance} :attrs} munition
           unguided? (= false guidance)
+          guidance (if (= [:laser-optical] guidance)
+                     [:laser :optical]
+                     guidance)
           path-prefix (if unguided?
                         "unguided"
                         (when munition-type
