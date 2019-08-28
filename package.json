@@ -19,6 +19,8 @@
     "install:web": "cd web && npm install",
     "install:compiler": "cd compiler && clojure -Spath",
 
+    "stop": "cd web && npm run stop",
+
     "test": "npm run test:web && npm run test:compiler",
     "test:web": "cd web && npm run test",
     "test:compiler": "cd compiler && clojure -A:test"
