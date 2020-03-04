@@ -18,7 +18,7 @@
     "process": "^0.11.10",
     "react-flip-move": "^3.0.1",
     "react-highlight.js": "^1.0.7",
-    "shadow-cljs": "^2.8.46"
+    "shadow-cljs": "^2.8.90"
   },
   "scripts": {
     "create-build-report": "shadow-cljs run shadow.cljs.build-report app build-report.html && open build-report.html",

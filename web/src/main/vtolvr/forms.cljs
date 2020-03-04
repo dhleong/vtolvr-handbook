@@ -30,7 +30,7 @@
     ((:on-change opts) new-value)))
 
 (defn- current-value-key [opts]
-  (or (if (contains? opts :value)
+  (or (when (contains? opts :value)
         (:value opts (:default opts)))
 
       (when-let [sub-form (:<sub opts)]
